@@ -5,7 +5,14 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var uri = 'mongodb://localhost/economico';
 
+//database
+mongoose.Promise = global.Promise;
+mongoose.connect(uri);
+var db = mongoose.connection;
+
+//routes
 var index = require('./routes/index');
 var users = require('./routes/users');
 var costs = require('./routes/costs');
