@@ -8,7 +8,60 @@ var Cost = require('../models/user');
 /* GET costs listing. */
 router.route('/')
     .get(function(req, res, next) {
-      res.send('Get costs for specified UserID');
+        console.log('getting costs for specific user');
+        var userid = req.params.userid;
+        var keyword = req.query.keyword;
+        console.log('keyword: ' + keyword);
+
+    
+        var costs = [];
+    
+        User.findOne({'_id': userid}, 'costs', function(err, result){
+            if(err){
+                console.log("ERROR: " + err);
+                res.status(500).json({'message':'Internal Error in finding specific user getting costs'});
+            } else if ( result.length !== 0){
+                if(keyword === undefined){
+                    result.costs.forEach(function(cost){    
+                        var tempCost = {};
+                        tempCost.costid = cost._id;
+                        tempCost.title = cost.title;
+                        tempCost.description = cost.description;
+                        tempCost.amount = cost.amount;
+                        tempCost.date = cost.date;
+                        tempCost.category = cost.category;
+                        if(Object.keys(tempCost).length > 0){
+                            costs.push(tempCost);
+                        }
+                    });
+                } else{
+                    result.costs.forEach(function(cost){  
+                        if(cost.title.includes(keyword) || cost.description.includes(keyword)){
+                            var tempCost = {};
+                            tempCost.costid = cost._id;
+                            tempCost.title = cost.title;
+                            tempCost.description = cost.description;
+                            tempCost.amount = cost.amount;
+                            tempCost.date = cost.date;
+                            tempCost.category = cost.category;
+                            if(Object.keys(tempCost).length > 0){
+                                costs.push(tempCost);
+                            }
+                        } 
+                    });
+                }
+                
+                if(costs.length === 0){
+                    console.log('No costs for this user');
+                    res.status(404).json({'message': 'no cost'});
+                } else {
+                    res.status(200).json(costs);
+                }   
+            } else{
+                console.log("User Not Found!");
+                res.status(404).json({'message': 'user not found'});
+            }
+        });
     })
     .post(function(req, res, next) {
       console.log('Adding cost for specific user');
@@ -21,7 +74,7 @@ router.route('/')
       User.find({_id: userid}, function(err, usr){
           if(err){
               console.log("ERROR: " + err);
-              res.status(500).json({'message':'Internal Error in finding costs for specific user'});
+              res.status(500).json({'message':'Internal Error in finding specific user for saving cost'});
           } else if ( usr.length !== 0){
             var info = req.body;
             cost.amount = info.amount;
@@ -44,7 +97,7 @@ router.route('/')
             });
           } else{        
             console.log("User Not Found!");
-            res.status(200).json({'message': 'user not found'});
+            res.status(404).json({'message': 'user not found'});
           }
       });
       

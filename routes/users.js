@@ -54,7 +54,7 @@ router.route('/:userid')
         res.status(200).json(user);
       } else{
         console.log("User Not Found!");
-        res.status(200).json({});
+        res.status(404).json({"message": 'User Not Found' });
       }
   });
 })
