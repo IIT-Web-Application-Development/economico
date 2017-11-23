@@ -29,7 +29,7 @@ router.route('/')
         res.status(500).json({'message':'Internal Error in Saving User'});
     } else{
       console.log("User Saved Successfully");
-      res.status(200).json({"result": 'ok' });
+      res.status(200).json({"message": 'ok' });
     }
   });
 });
