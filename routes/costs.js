@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 var User = require('../models/user');
 var Cost = require('../models/user');
+var mongoose = require('mongoose');
 
 
 
@@ -82,6 +83,7 @@ router.route('/')
             cost.category = info.category;
             cost.title = info.title;
             cost.description = info.description;
+            cost._id = generateID();
 
             usr[0].costs.push(cost);
             user.costs = usr[0].costs;
@@ -108,9 +110,37 @@ router.route('/')
 
 router.route('/:costid')
     .get(function(req, res, next) {
-        // res.send('Get specified cost for specified UserID');
-        console.log('costid&&: ' + req.params.costid); 
-        console.log('userid&&: ' + req.params.userid); 
+        console.log('getting specific cost for specific user');
+        var userid = req.params.userid;
+        var costid = parseInt(req.params.costid);
+        var tempCost = {};
+        
+        User.findOne({'_id': userid}, 'costs', function(err, result){
+            if(err){
+                console.log("ERROR: " + err);
+                res.status(500).json({'message':'Internal Error in finding specific user for getting specific cost'});
+            } else if (result){
+                result.costs.forEach(function(cost){
+                    if(cost._id === costid){
+                        tempCost._id = cost._id;
+                        tempCost.amount = cost.amount;
+                        tempCost.title = cost.title;
+                        tempCost.description = cost.description;
+                        tempCost.category = cost.category;
+                        tempCost.date = cost.date;
+                    }            
+                });
+                if(tempCost){
+                    res.status(200).json(tempCost);
+                } else {
+                    console.log('Cost Not Found');
+                    res.status(404).json({'message': 'cost not found'});
+                }                
+            } else{
+                console.log("User Not Found!");
+                res.status(404).json({'message': 'user not found'});
+            }
+        });
     })
     .put(function(req, res, next) {
         res.send('Update specified cost for specified user');
@@ -118,5 +148,9 @@ router.route('/:costid')
     .delete(function(req, res, next) {
         res.send('Delete specified cost for specified user');
     });
+
+function generateID(){
+    return Date.now();
+}
 
 module.exports = router;
