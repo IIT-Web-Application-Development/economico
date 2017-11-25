@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router({mergeParams: true});
 var User = require('../models/user');
 var Cost = require('../models/user');
-var mongoose = require('mongoose');
-
 
 
 /* GET costs listing. */
@@ -127,7 +125,7 @@ router.route('/:costid')
         console.log('getting specific cost for specific user');
         var userid = req.params.userid;
         var costid = parseInt(req.params.costid);
-        var tempCost = {};
+        var tempCost = null;
 
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
@@ -136,6 +134,7 @@ router.route('/:costid')
             } else if (result){
                 result.costs.forEach(function(cost){
                     if(cost._id === costid){
+                        tempCost = {};
                         tempCost._id = cost._id;
                         tempCost.amount = cost.amount;
                         tempCost.title = cost.title;
