@@ -114,7 +114,7 @@ router.route('/:costid')
         var userid = req.params.userid;
         var costid = parseInt(req.params.costid);
         var tempCost = {};
-        
+
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
                 console.log("ERROR: " + err);
@@ -146,7 +146,45 @@ router.route('/:costid')
         res.send('Update specified cost for specified user');
     })
     .delete(function(req, res, next) {
-        res.send('Delete specified cost for specified user');
+        console.log('Deleting specified cost for specified user');
+        var deleted = false;
+        var userid = req.params.userid;
+        var costid = parseInt(req.params.costid);
+        
+        var costs = [];
+        var user = new User();
+    
+        User.findOne({'_id': userid}, 'costs', function(err, result){
+            if(err){
+                console.log("ERROR: " + err);
+                res.status(500).json({'message':'Internal Error in finding specific user for deleting specific cost'});
+            } else if (result){
+                result.costs.forEach(function(cost){
+                    if(cost._id === costid){
+                        deleted = true;
+                    } else{
+                        costs.push(cost);
+                    }                   
+                });
+                if(deleted){
+                    User.update({'_id': userid}, {'costs': costs}, function(err, doc){
+                        if(err !== null){
+                            console.log(err);
+                            res.status(500).json({'message':'Internal Error in updating specific user for deleting specific cost'});
+                        } else{
+                            console.log("Cost Deleted");
+                            res.status(200).json({'message':'cost deleted'});
+                        }
+                    });
+                } else {
+                    console.log("Cost Not Found!");
+                    res.status(404).json({'message': 'cost not found'});
+                }
+            } else{
+                console.log("User Not Found!");
+                res.status(404).json({'message': 'user not found'});
+            }
+        });
     });
 
 function generateID(){
