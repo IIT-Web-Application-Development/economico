@@ -86,7 +86,21 @@ router.route('/:userid')
   res.send('update single user');
 })
 .delete(function(req, res, next){
-  res.send('delete single user');
+  console.log('Deleting All Users');
+  var userid = req.params.userid;
+
+  User.remove({'_id': userid}, function(err, done){
+      if(err !== null){
+          console.log(err);
+          res.status(500).json({'message':'Internal Error in deleting user'});
+      } else if (done.result.n === 0){
+          console.log("User Not Found.");
+          res.status(200).json({'message': 'user not found'});
+      } else{
+          console.log("User Deleted Successfully");
+          res.status(200).json({'message': 'user deleted successfully'});
+      }
+  });
 });
 
 
