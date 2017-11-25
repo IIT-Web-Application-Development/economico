@@ -83,7 +83,19 @@ router.route('/:userid')
   });
 })
 .put(function(req, res, next){
-  res.send('update single user');
+  console.log('Updating specific user');
+  
+  var user = User.update({'_id': req.params.userid}, req.body);
+  user.exec((err, result) => {
+      if(err) res.status(500).json({'message': 'internal error in updating user'});
+      if(result.n === 0){
+          console.log('User Not Found');
+          res.status(404).json({'message': 'user not found'});
+      } else {
+          console.log('User Updated');
+          res.status(200).json({'message': 'user updated'});
+      }
+  });
 })
 .delete(function(req, res, next){
   console.log('Deleting All Users');
