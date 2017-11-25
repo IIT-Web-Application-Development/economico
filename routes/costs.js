@@ -105,7 +105,21 @@ router.route('/')
       
     })
     .delete(function(req, res, next) {
-      res.send('Delete all costs for specified user');
+      console.log('Deleting all costs for specific user');
+      var userid = req.params.userid
+
+      User.update({'_id': userid}, {'costs': []}, function(err, done){
+          if(err){
+              console.log("ERROR: " + err);
+              res.status(500).json({'message':'Internal Error in deleting all costs for specific user'});
+          } else if (done.n === 0){
+              console.log("User Not Found.");
+              res.status(404).json({'message': 'user not found'});
+          } else {
+              console.log("All Costs Deleted Successfully");
+              res.status(200).json({'message':'all cost deleted'});
+          }
+      });
     });
 
 router.route('/:costid')
@@ -152,7 +166,6 @@ router.route('/:costid')
         var costid = parseInt(req.params.costid);
         
         var costs = [];
-        var user = new User();
     
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
