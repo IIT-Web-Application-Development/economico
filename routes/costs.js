@@ -157,16 +157,52 @@ router.route('/:costid')
     })
     .put(function(req, res, next) {
         console.log('Updating specific cost for specific user');
-
-        var user = User.update({$and:[{'_id': req.params.userid}, {'costs._id': parseInt(req.params.costid)}]}, req.body);
-        user.exec((err, result) => {
-            if(err) res.status(404).send(err)
-            if(result.n === 0){
-                console.log('Cost Not Found');
-                res.status(404).json({'message': 'cost not found'});
+        
+        var userid = req.params.userid;
+        var costid = parseInt(req.params.costid);
+        var costs = [];
+        var info = req.body;
+        var updated = false;
+        
+        User.findOne({'_id': userid}, 'costs', function(err, result){
+            if(err){
+                console.log("ERROR: " + err);
+                res.status(500).json({'message':'Internal Error in finding specific user to update cost'});
+            } else if (result){
+                result.costs.forEach(function(cost){  
+                    if(cost._id === costid){
+                        var tempCost = {};
+                        updated = true;
+                        tempCost._id = costid;
+                        tempCost.title = info.title;
+                        tempCost.description = info.description;
+                        tempCost.amount = info.amount;
+                        tempCost.date = info.date;
+                        tempCost.category = info.category;
+                        if(Object.keys(tempCost).length > 0){
+                            costs.push(tempCost);
+                        }
+                    } else{
+                        costs.push(cost);
+                    }
+                });
+                if(updated){
+                    User.update({'_id': userid}, {'costs': costs}, function(err, result){
+                        if(err){
+                            console.log("ERROR: " + err);
+                            res.status(500).json({'message':'Internal Error in finding specific user to update cost'});
+                        } else if (result.n === 1){
+                            console.log('Cost Updated');
+                            res.status(200).json({'message':'cost updated'});
+                        }
+                    });
+                } else{
+                    console.log('Cost NOt Found');
+                    res.status(404).json({'message':'cost not found'});
+                }
             } else {
-                console.log('Cost Updated');
-                res.status(404).json({'message': 'cost updated', cost: req.body});
+                console.log("User Not Found!");
+                res.status(404).json({'message': 'user not found'});
             }
         });
 
