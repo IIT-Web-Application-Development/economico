@@ -107,6 +107,7 @@
     </header>
 
 
+
     {{{body}}}
 
     <!-- /.content-wrapper -->
@@ -120,6 +121,53 @@
   </div>
   <!-- ./wrapper -->
 
+  <!-- MODALS-->
+  <!-- MODAL REGISTER-->
+  <div class="modal fade" id="modal-register">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Default Modal</h4>
+        </div>
+        <div class="modal-body">
+          <!-- form start -->
+          <form role="form">
+            <div class="form-group">
+              <label for="input-name">Name</label>
+              <input required type="text" class="form-control" id="input-name" name="name" placeholder="i.e. Name Lastname">
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="i.e. test@test.test">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="i">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Monthly limit</label>
+              <input required type="text" class="form-control" id="limit" placeholder="i.e. $7900">
+            </div>
+            <div class="checkbox">
+              <label>
+                    <input type="checkbox"/> Remember me
+                  </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary pull-left">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
 </body>
 
 <!-- jQuery 3 -->
@@ -130,5 +178,8 @@
 <script src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
 <script src="/dist/js/adminlte.min.js"></script>
+<!-- Custom  -->
+<script src="/javascript/main.js"></script>
+
 
 </html>
