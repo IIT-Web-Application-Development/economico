@@ -66,7 +66,6 @@ router.route('/:userid')
         console.log("ERROR in finding user: " + err);
         res.status(500).json({'message':'Internal Error in Finding User'});
       } else if ( usr.length !== 0){
-        console.log(usr);
         user._id = usr[0]._id;
         user.name = usr[0].name;
         user.pass = usr[0].pass;

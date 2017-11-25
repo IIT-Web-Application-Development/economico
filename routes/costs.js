@@ -10,6 +10,9 @@ router.route('/')
         console.log('getting costs for specific user');
         var userid = req.params.userid;
         var keyword = req.query.keyword;
+        var beginDate = req.query.begindate === undefined ? undefined : parseInt(req.query.begindate);
+        var endDate = req.query.enddate === undefined ? undefined : parseInt(req.query.enddate);;
+
         console.log('keyword: ' + keyword);
 
     
@@ -19,23 +22,10 @@ router.route('/')
             if(err){
                 console.log("ERROR: " + err);
                 res.status(500).json({'message':'Internal Error in finding specific user getting costs'});
-            } else if ( result.length !== 0){
+            } else if (result){
                 if(keyword === undefined){
-                    result.costs.forEach(function(cost){    
-                        var tempCost = {};
-                        tempCost.costid = cost._id;
-                        tempCost.title = cost.title;
-                        tempCost.description = cost.description;
-                        tempCost.amount = cost.amount;
-                        tempCost.date = cost.date;
-                        tempCost.category = cost.category;
-                        if(Object.keys(tempCost).length > 0){
-                            costs.push(tempCost);
-                        }
-                    });
-                } else{
-                    result.costs.forEach(function(cost){  
-                        if(cost.title.includes(keyword) || cost.description.includes(keyword)){
+                    if(beginDate === undefined && endDate === undefined){
+                        result.costs.forEach(function(cost){    
                             var tempCost = {};
                             tempCost.costid = cost._id;
                             tempCost.title = cost.title;
@@ -46,8 +36,60 @@ router.route('/')
                             if(Object.keys(tempCost).length > 0){
                                 costs.push(tempCost);
                             }
-                        } 
-                    });
+                        });
+                    } else{
+                        result.costs.forEach(function(cost){   
+                            var d = new Date(cost.date);
+                            var t = d.getTime(); 
+                            if(t >= beginDate && t <= endDate){
+                                var tempCost = {};
+                                tempCost.costid = cost._id;
+                                tempCost.title = cost.title;
+                                tempCost.description = cost.description;
+                                tempCost.amount = cost.amount;
+                                tempCost.date = cost.date;
+                                tempCost.category = cost.category;
+                                if(Object.keys(tempCost).length > 0){
+                                    costs.push(tempCost);
+                                }
+                            }
+                        });
+                    }
+                } else{
+                    if(beginDate === undefined && endDate === undefined){
+                        result.costs.forEach(function(cost){  
+                            if(cost.title.includes(keyword) || cost.description.includes(keyword)){
+                                var tempCost = {};
+                                tempCost.costid = cost._id;
+                                tempCost.title = cost.title;
+                                tempCost.description = cost.description;
+                                tempCost.amount = cost.amount;
+                                tempCost.date = cost.date;
+                                tempCost.category = cost.category;
+                                if(Object.keys(tempCost).length > 0){
+                                    costs.push(tempCost);
+                                }
+                            } 
+                        });
+                    } else{
+                        result.costs.forEach(function(cost){  
+                            var d = new Date(cost.date);
+                            var t = d.getTime(); 
+                            if( ( cost.title.includes(keyword) || cost.description.includes(keyword) ) && 
+                                    (t >= beginDate && t <= endDate) ){
+                                var tempCost = {};
+                                tempCost.costid = cost._id;
+                                tempCost.title = cost.title;
+                                tempCost.description = cost.description;
+                                tempCost.amount = cost.amount;
+                                tempCost.date = cost.date;
+                                tempCost.category = cost.category;
+                                if(Object.keys(tempCost).length > 0){
+                                    costs.push(tempCost);
+                                }
+                            } 
+                        });
+                    }
                 }
                 
                 if(costs.length === 0){
