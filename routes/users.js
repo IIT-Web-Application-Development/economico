@@ -7,8 +7,30 @@ var User = require('../models/user');
 /* GET users listing. */
 router.route('/')
 .get(function(req, res, next) {
-  //res.send('return the users');
   console.log('Getting Users');
+  var userid = req.params.userid;
+  
+  var users = [];
+
+  User.find({}, '-pass -costs', function(err, result){
+      if(err){
+          console.log("ERROR in finding all users: " + err);
+          res.status(500).json({'message':'Internal Error in finding all users'});
+      } else if ( result.length !== 0){
+          result.forEach(function(r){
+              var user = {};
+              user.id = r._id;
+              user.name = r.name;
+              user.email = r.email;
+              user.limit = r.limit
+              users.push(user);
+          });
+          res.status(200).json(users);
+      } else{
+          console.log("Not any user found");
+          res.status(404).json({'message':'no users'});
+      }
+  });
 })
 .post(function(req, res, next) {
   console.log('Adding User');

@@ -158,7 +158,18 @@ router.route('/:costid')
     .put(function(req, res, next) {
         console.log('Updating specific cost for specific user');
 
-        
+        var user = User.update({$and:[{'_id': req.params.userid}, {'costs._id': parseInt(req.params.costid)}]}, req.body);
+        user.exec((err, result) => {
+            if(err) res.status(404).send(err)
+            if(result.n === 0){
+                console.log('Cost Not Found');
+                res.status(404).json({'message': 'cost not found'});
+            } else {
+                console.log('Cost Updated');
+                res.status(404).json({'message': 'cost updated', cost: req.body});
+            }
+        });
+
     })
     .delete(function(req, res, next) {
         console.log('Deleting specified cost for specified user');
