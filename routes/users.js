@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var User = require('../models/user');
 
 
-/* GET users listing. */ 
+/* GET users listing. */
 router.route('/')
 .get(function(req, res, next) {
   //res.send('return the users');
@@ -12,10 +12,10 @@ router.route('/')
 })
 .post(function(req, res, next) {
   console.log('Adding User');
-  
+
   var info = req.body;
   var user = new User();
-  
+
   user._id = info.userid;
   user.name = info.name;
   user.pass = info.password;
@@ -51,7 +51,9 @@ router.route('/:userid')
         user.limit = usr[0].limit;
         user.email = usr[0].email;
         user.costs = usr[0].costs;
-        res.status(200).json(user);
+        res.render('index', {
+          user:user
+        });
       } else{
         console.log("User Not Found!");
         res.status(404).json({"message": 'User Not Found' });
