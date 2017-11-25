@@ -156,7 +156,9 @@ router.route('/:costid')
         });
     })
     .put(function(req, res, next) {
-        res.send('Update specified cost for specified user');
+        console.log('Updating specific cost for specific user');
+
+        
     })
     .delete(function(req, res, next) {
         console.log('Deleting specified cost for specified user');
