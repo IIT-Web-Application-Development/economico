@@ -2,7 +2,8 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let CostSchema = new Schema({
-	amount: Number,
+    _id: Number,
+    amount: Number,
 	date: Date,
     category: String,
     title: String,
