@@ -21,6 +21,10 @@ router.get('/', function(req, res, next) {
     }
   });
 
+/* GET home page. */
+router.get('/login', function(req, res, next) {
+  console.log('Login page');
+  res.render('login', {});
 });
 
 router.get('/Milad', function(req, res, next) {
