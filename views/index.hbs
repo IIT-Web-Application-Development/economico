@@ -1,233 +1,381 @@
-<!-- Left side column. contains the logo and sidebar -->
-
-<aside class="main-sidebar">
-
-  <!-- sidebar: style can be found in sidebar.less -->
-  <section class="sidebar">
-    <!-- sidebar menu: : style can be found in sidebar.less -->
-    <ul class="sidebar-menu" data-widget="tree">
-      <li>
-        <a href="#">
-          <i class="fa fa-calendar"></i> <span>Compare</span>
+<body class="hold-transition skin-blue sidebar-mini" style="padding:0;">
+  <div class="wrapper">
+    <header class="main-header">
+      <!-- Logo -->
+      <a class="title logo">
+        <!-- logo for regular state and mobile devices -->
+        <b>Economico</b>
+      </a>
+      <!-- Header Navbar: style can be found in header.less -->
+      <nav class="navbar navbar-static-top">
+        <!-- Sidebar toggle button-->
+        <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+            <span class="sr-only">Toggle navigation</span>
         </a>
-      </li>
-      <li>
-        <a href="#">
-          <i class="fa fa-gears"></i> <span>Settings</span>
-        </a>
-      </li>
-      <li>
-        <!-- search form -->
-        <form action="#" method="get" class="sidebar-form">
-          <div class="input-group">
-            <input type="text" name="q" class="form-control" placeholder="Search...">
-            <span class="input-group-btn">
-                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
-                  </button>
-                </span>
-          </div>
-        </form>
-      </li>
-    </ul>
-  </section>
-  <!-- /.sidebar -->
-</aside>
-
-<!-- Content Wrapper. Contains page content -->
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <h1>
-        Dashboard
-        <small>Control panel</small>
-      </h1>
-    <ol class="breadcrumb">
-      <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-      <li class="active">Dashboard</li>
-    </ol>
-  </section>
-
-  <!-- Main content -->
-  <section class="content">
-    <!-- Main row -->
-    <div class="row">
-      <!-- Left col -->
-      <section class="col-lg-7 connectedSortable">
-        <div class="box box-primary">
-          <!-- Custom tabs (Charts with tabs)-->
-          <div class="nav-tabs-custom">
-            <!-- Tabs within a box -->
-            <ul class="nav nav-tabs pull-right">
-              <li class="active"><a href="#expenses-pie-chart" data-toggle="tab">Pie</a></li>
-              <li><a href="#expenses-bars-chart" data-toggle="tab">Bars</a></li>
-              <li><a href="#expenses-list" data-toggle="tab">List</a></li>
-              <li class="pull-left header"><i class="fa fa-inbox"></i> Expenses</li>
-            </ul>
-          </div>
-          <!-- /.nav-tabs-custom -->
-          <div class="tab-content no-padding">
-            <!-- Espenses - Default: List -->
-            <div class="chart tab-pane active" id="expenses-list" style="position: relative; height: 300px;">
-              <!-- TO DO List -->
-              <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-              <ul class="todo-list">
+        <div class="navbar-custom-menu">
+          <ul class="nav navbar-nav">
+            <!-- Notifications: style can be found in dropdown.less -->
+            <li class="dropdown notifications-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <i class="fa fa-bell-o"></i>
+                <span class="label label-danger">1</span>
+              </a>
+              <ul class="dropdown-menu">
+                <li class="header">You have 1 notification</li>
                 <li>
-                  <span class="handle">
-                              <i class="fa fa-ellipsis-v"></i>
-                              <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Let theme shine like a star</span>
-                  <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
-                  </div>
+                  <!-- inner menu: contains the actual data -->
+                  <ul class="menu">
+                    <li>
+                      <a href="#">
+                        <i class="fa fa-warning text-red"></i> You reached $100 this month!
+                      </a>
+                    </li>
+                  </ul>
                 </li>
-                <li>
-                  <span class="handle">
-                              <i class="fa fa-ellipsis-v"></i>
-                              <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                  <input type="checkbox" value="">
-                  <span class="text">Check your messages and notifications</span>
-                  <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                  <div class="tools">
-                    <i class="fa fa-edit"></i>
-                    <i class="fa fa-trash-o"></i>
+              </ul>
+            </li>
+
+            <!-- User Account: style can be found in dropdown.less -->
+            <li class="dropdown user user-menu">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                {{#if user.pic}}
+                  <img src="/dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
+                  {{else}}
+                    <img src="/img/user.png" class="user-image" alt="User Image"/>
+                {{/if}}
+                <span class="hidden-xs">{{user.name}}</span>
+              </a>
+              <ul class="dropdown-menu">
+                <!-- User image -->
+                <li class="user-header">
+                  <p>
+                    {{user.name}}
+                  </p>
+                  <p>
+                    <small>Balance: ${{user.limit}}</small>
+                  </p>
+                  <p>
+                    <small>{{user.email}}</small>
+                  </p>
+                  <p>
+                    <small>Spent: ${{user.total}}</small>
+                  </p>
+                </li>
+                <!-- Menu Footer-->
+                <li class="user-footer">
+                  <div class="pull-left">
+                    <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  </div>
+                  <div class="pull-right">
+                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="chart tab-pane" id="expenses-pie-chart" style="position: relative; height: 300px;"></div>
-            <div class="chart tab-pane" id="expenses-pie-chart" style="position: relative; height: 300px;"></div>
-          </div>
-          <!-- /.box-body -->
-          <div class="box-footer clearfix no-border">
-            <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-add-expense">
+            </li>
+            <!-- Control Sidebar Toggle Button -->
+            <li>
+              <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+
+      <!-- sidebar: style can be found in sidebar.less -->
+      <section class="sidebar">
+        <!-- sidebar menu: : style can be found in sidebar.less -->
+        <ul class="sidebar-menu" data-widget="tree">
+          <li>
+            <a href="#">
+          <i class="fa fa-calendar"></i> <span>Compare</span>
+        </a>
+          </li>
+          <li>
+            <a href="#">
+          <i class="fa fa-gears"></i> <span>Settings</span>
+        </a>
+          </li>
+          <li>
+            <!-- search form -->
+            <form action="#" method="get" class="sidebar-form">
+              <div class="input-group">
+                <input type="text" name="q" class="form-control" placeholder="Search...">
+                <span class="input-group-btn">
+                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </form>
+          </li>
+        </ul>
+      </section>
+      <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <h1>
+        Dashboard
+        <small>Control panel</small>
+      </h1>
+        <ol class="breadcrumb">
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
+          <li class="active">Dashboard</li>
+        </ol>
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <!-- Main row -->
+        <div class="row">
+          <!-- Left col -->
+          <section class="col-lg-7 connectedSortable">
+            <div class="box box-primary">
+              <!-- Custom tabs (Charts with tabs)-->
+              <div class="nav-tabs-custom">
+                <!-- Tabs within a box -->
+                <ul class="nav nav-tabs pull-right">
+                  <li class="active"><a href="#expenses-list" data-toggle="tab">List</a></li>
+                  <li><a href="#expenses-donut-chart" class="is-chart" data-toggle="tab">Pie</a></li>
+                  <li><a href="#expenses-bars-chart" class="is-chart" data-toggle="tab">Bars</a></li>
+                  <li class="pull-left header"><i class="fa fa-inbox"></i> Expenses</li>
+                </ul>
+              </div>
+              <!-- /.nav-tabs-custom -->
+              <div class="tab-content no-padding">
+                <!-- Espenses - Default: List -->
+                <div class="chart tab-pane active" id="expenses-list" style="position: relative; height: 300px;">
+                  <!-- TO DO List -->
+                  <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
+                  <ul class="todo-list">
+                    <li>
+                      <span class="handle">
+                              <i class="fa fa-ellipsis-v"></i>
+                              <i class="fa fa-ellipsis-v"></i>
+                            </span>
+                      <input type="checkbox" value="">
+                      <span class="text">Let theme shine like a star</span>
+                      <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
+                      <div class="tools">
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-trash-o"></i>
+                      </div>
+                    </li>
+                    <li>
+                      <span class="handle">
+                              <i class="fa fa-ellipsis-v"></i>
+                              <i class="fa fa-ellipsis-v"></i>
+                            </span>
+                      <input type="checkbox" value="">
+                      <span class="text">Check your messages and notifications</span>
+                      <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
+                      <div class="tools">
+                        <i class="fa fa-edit"></i>
+                        <i class="fa fa-trash-o"></i>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <div class="chart tab-pane" id="expenses-donut-chart" style="position: relative; height: 300px;">
+                  <!-- DONUT CHART -->
+                  <div class="box-body">
+                    <canvas id="pieChart" style="height:250px"></canvas>
+                  </div>
+                  <!-- /.box-body -->
+                </div>
+                <div class="chart tab-pane" id="expenses-bars-chart" style="position: relative; height: 300px;"></div>
+              </div>
+              <!-- /.box-body -->
+              <div class="box-footer clearfix no-border">
+                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-add-expense">
               <i class="fa fa-plus"></i>
               Add item
             </button>
-          </div>
-          <!-- MODAL ADD EXPENSE-->
-          <div class="modal fade" id="modal-add-expense">
-            <div class="modal-dialog">
-              <div class="box box-primary">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              </div>
+              <!-- MODAL ADD EXPENSE-->
+              <div class="modal fade" id="modal-add-expense">
+                <div class="modal-dialog">
+                  <div class="box box-primary">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">Expense</h4>
-                  </div>
-                  <div class="modal-body">
-                    <!-- form start -->
-                    <form role="form">
-                      <div class="form-group">
-                        <label for="input-title">Title</label>
-                        <input required type="text" class="form-control" id="input-title" name="title" placeholder="i.e. War and Peace book - Amazon">
+                        <h4 class="modal-title">Expense</h4>
                       </div>
-                      <div class="form-group">
-                        <label for="input-title">Amount</label>
-                        <input required type="text" class="form-control" id="input-amount" name="amount" placeholder="i.e. 20">
-                      </div>
-                      <div class="form-group">
-                        <label for="email">Description</label>
-                        <textaera class="form-control" id="form-description" name="description" placeholder="i.e. Hardcopy version.">
-                      </div>
-                      <!-- select -->
-                      <div class="form-group">
-                        <label>Category</label>
-                        <select class="form-control">
+                      <div class="modal-body">
+                        <!-- form start -->
+                        <form role="form">
+                          <div class="form-group">
+                            <label for="input-title">Title</label>
+                            <input required type="text" class="form-control" id="input-title" name="title" placeholder="i.e. War and Peace book - Amazon">
+                          </div>
+                          <div class="form-group">
+                            <label for="input-title">Amount</label>
+                            <input required type="text" class="form-control" id="input-amount" name="amount" placeholder="i.e. 20">
+                          </div>
+                          <div class="form-group">
+                            <label for="email">Description</label>
+                            <textaera class="form-control" id="form-description" name="description" placeholder="i.e. Hardcopy version.">
+                          </div>
+                          <!-- select -->
+                          <div class="form-group">
+                            <label>Category</label>
+                            <select class="form-control">
                         <option>Education</option>
                         <option>Groceries</option>
                         <option>Bills</option>
                         <option>Travel</option>
                       </select>
+                          </div>
+                        </form>
                       </div>
-                    </form>
+                      <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
                   </div>
-                  <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary pull-left">Submit</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                  </div>
+                  <!-- /.box -->
                 </div>
-                <!-- /.modal-content -->
+                <!-- /.modal-dialog -->
               </div>
-              <!-- /.box -->
+              <!-- /.modal -->
             </div>
-            <!-- /.modal-dialog -->
-          </div>
-          <!-- /.modal -->
+          </section>
+          <!-- /.Left col -->
         </div>
+        <!-- /.row (main row) -->
+
+        <!-- Small boxes (Stat box) -->
+        <div class="row">
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-aqua">
+              <div class="inner">
+                <h3>$150</h3>
+                <p>Groceries</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-bag"></i>
+              </div>
+              <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-green">
+              <div class="inner">
+                <h3>$11,000<sup style="font-size: 20px">%</sup></h3>
+                <p>Education</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-ios-paper"></i>
+              </div>
+              <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-yellow">
+              <div class="inner">
+                <h3>$560</h3>
+                <p>Bills</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-android-home"></i>
+              </div>
+              <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+          <div class="col-lg-3 col-xs-6">
+            <!-- small box -->
+            <div class="small-box bg-red">
+              <div class="inner">
+                <h3>$405</h3>
+                <p>Travel</p>
+              </div>
+              <div class="icon">
+                <i class="ion ion-plane"></i>
+              </div>
+              <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
+            </div>
+          </div>
+          <!-- ./col -->
+
+          <!-- ./col -->
+        </div>
+        <!-- /.row -->
+
       </section>
-      <!-- /.Left col -->
+      <!-- /.content -->
     </div>
-    <!-- /.row (main row) -->
+    <!-- /.content-wrapper -->
 
-    <!-- Small boxes (Stat box) -->
-    <div class="row">
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-aqua">
-          <div class="inner">
-            <h3>$150</h3>
-            <p>Groceries</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-bag"></i>
-          </div>
-          <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer">
+      <div class="pull-right hidden-xs">
+        <b>Version</b> 0.1
       </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-green">
-          <div class="inner">
-            <h3>$11,000<sup style="font-size: 20px">%</sup></h3>
-            <p>Education</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-ios-paper"></i>
-          </div>
-          <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-yellow">
-          <div class="inner">
-            <h3>$560</h3>
-            <p>Bills</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-android-home"></i>
-          </div>
-          <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
-      <div class="col-lg-3 col-xs-6">
-        <!-- small box -->
-        <div class="small-box bg-red">
-          <div class="inner">
-            <h3>$405</h3>
-            <p>Travel</p>
-          </div>
-          <div class="icon">
-            <i class="ion ion-plane"></i>
-          </div>
-          <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
-        </div>
-      </div>
-      <!-- ./col -->
+      <strong>Copyright &copy; Economico </strong>
+    </footer>
 
-      <!-- ./col -->
+  </div>
+  <!-- ./wrapper -->
+
+  <!-- MODALS-->
+  <!-- MODAL REGISTER-->
+  <div class="modal fade" id="modal-register">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title">Default Modal</h4>
+        </div>
+        <div class="modal-body">
+          <!-- form start -->
+          <form role="form">
+            <div class="form-group">
+              <label for="input-name">Name</label>
+              <input required type="text" class="form-control" id="input-name" name="name" placeholder="i.e. Name Lastname">
+            </div>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" class="form-control" id="email" name="email" placeholder="i.e. test@test.test">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Password</label>
+              <input required type="password" class="form-control" id="exampleInputPassword1" placeholder="i">
+            </div>
+            <div class="form-group">
+              <label for="exampleInputPassword1">Monthly limit</label>
+              <input required type="text" class="form-control" id="limit" placeholder="i.e. $7900">
+            </div>
+            <div class="checkbox">
+              <label>
+                <input type="checkbox"/> Remember me
+              </label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary pull-left">Submit</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
     </div>
-    <!-- /.row -->
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 
-  </section>
-  <!-- /.content -->
-</div>
-<!-- /.content-wrapper -->
+</body>
