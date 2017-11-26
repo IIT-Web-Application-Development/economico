@@ -27,10 +27,10 @@ router.get('/login', function(req, res, next) {
   res.render('login', {});
 });
 
-router.get('/Milad', function(req, res, next) {
-  res.render('index', {
-    title: 'The Great!'
-  });
+/* GET home page. */
+router.get('/register', function(req, res, next) {
+  console.log('Register page');
+  res.render('register', {});
 });
 
 module.exports = router;
