@@ -1,6 +1,29 @@
 $.noConflict();
 
 (function($) {
+
+  var categories = [{
+      name: "Education",
+      label: 'grey'
+    },
+    {
+      name: "Groceries",
+      label: 'green'
+    },
+    {
+      name: "Clothing",
+      label: 'red'
+    },
+    {
+      name: "Bills",
+      label: 'orange'
+    },
+    {
+      name: "Travel",
+      label: 'aqua'
+    }
+  ];
+
   $(document).ready(function() {
     "use strict";
 
