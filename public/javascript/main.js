@@ -151,6 +151,18 @@ $.noConflict();
       }
     }
 
+    //----------------DATA TABLES----------------//
+    $(function() {
+      $('#table-expenses').DataTable({
+        'paging': true,
+        'lengthChange': false,
+        'searching': true,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false
+      })
+    })
+
     //-----------------LOGIN---------------------//
     $('.icheck input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
