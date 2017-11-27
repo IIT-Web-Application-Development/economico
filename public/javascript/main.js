@@ -51,6 +51,33 @@ $.noConflict();
       });
     });
 
+    //-------------CRUD-----------------//
+    $('#add-expense-form').on('submit', function(e) {
+      console.log("TEST");
+      e.preventDefault();
+      $('.register-box-body .result').remove();
+      var data = objectifyForm($(this));
+      $.ajax({
+        url: "/users/" + data.userid + "/costs/",
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function(data, status) {
+          data = data.expense;
+          var currentHref = window.location.href;
+          // wondow.location.href = currentHref.replace('register', 'login');
+          var $tableRow = '<tr id="' + data._id + '"><td>' +
+            data.title + '</td><td>' + data.description +
+            '</td><td><span class="label label-success">' + data.category +
+            '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td></tr>';
+          $('#expenses-list tbody').append($tableRow);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+
     //--------------CHARTS------------------//
     $('.is-chart').on('click', function() {
       var href = $(this).attr('href');
