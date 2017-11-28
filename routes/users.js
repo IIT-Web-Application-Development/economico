@@ -9,7 +9,7 @@ router.route('/')
 .get(function(req, res, next) {
   console.log('Getting Users');
   var userid = req.params.userid;
-  
+
   var users = [];
 
   User.find({}, '-pass -costs', function(err, result){
@@ -38,10 +38,10 @@ router.route('/')
   var info = req.body;
   var user = new User();
 
-  user._id = info.userid;
+  user._id = info.username;
   user.name = info.name;
   user.pass = info.password;
-  user.limit = info.limit;
+  // user.limit = info.limit;
   user.email = info.email;
   user.costs = [];
 
@@ -83,7 +83,7 @@ router.route('/:userid')
 })
 .put(function(req, res, next){
   console.log('Updating specific user');
-  
+
   var user = User.update({'_id': req.params.userid}, req.body);
   user.exec((err, result) => {
       if(err) res.status(500).json({'message': 'internal error in updating user'});
