@@ -45,13 +45,13 @@ router.route('/')
   user.email = info.email;
   user.costs = [];
 
-  user.save(function(err){
+  user.save(function(err,user){
     if(err !== null){
         console.log(err);
         res.status(500).json({'message':'Internal Error in Saving User'});
     } else{
       console.log("User Saved Successfully");
-      res.status(200).json({"message": 'ok' });
+      res.status(200).json({"message": 'ok' ,user:user});
     }
   });
 });
