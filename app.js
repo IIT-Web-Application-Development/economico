@@ -6,11 +6,14 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var uri = 'mongodb://localhost/economico';
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 
 //database
 mongoose.Promise = global.Promise;
 mongoose.connect(uri);
 var db = mongoose.connection;
+
 
 //routes
 var index = require('./routes/index');
@@ -22,6 +25,20 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+
+
+//use sessions for tracking logins
+app.use(session({
+  secret: 'work hard',
+  resave: true,
+  saveUninitialized: false,
+  store: new MongoStore({
+    mongooseConnection: db
+  })
+}));
+
+
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
