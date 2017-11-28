@@ -51,6 +51,51 @@ $.noConflict();
       });
     });
 
+    //--------------LOGIN---------------//
+    $('#login-form').on('submit', function(e) {
+      console.log("TEST");
+      e.preventDefault();
+      var data = objectifyForm($(this));
+      // console.log("Form submitted! Let's get the info for", username);
+      $.ajax({
+        url: "/login",
+        type: "POST",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        statusCode:{
+          200: function(response){
+            console.log("You are logged in");
+          },
+          404: function(response){
+            console.log("Username or password wrong");
+          },
+          500: function(response){
+            console.log(response);
+          }
+        }
+        /*success: function(theData, status) {
+          if(status === 'success'){
+            console.log("Username or password wrong");
+          }else if(status === 200){
+            console.log("successfuly login");
+          }
+          var currentHref = window.location.href;
+          // wondow.location.href = currentHref.replace('register', 'login');
+          // console.log("You have been successfully logged in");
+        },
+        error: function(error) {
+          console.log(error);
+        }*/
+      });
+    });
+
+
+
+
+
+
+
+
     //-------------CRUD-----------------//
     //Add expense
     $('#add-expense-form').on('submit', function(e) {
