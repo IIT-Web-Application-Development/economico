@@ -52,6 +52,7 @@ $.noConflict();
     });
 
     //-------------CRUD-----------------//
+    //Add expense
     $('#add-expense-form').on('submit', function(e) {
       console.log("TEST");
       e.preventDefault();
@@ -74,6 +75,84 @@ $.noConflict();
         },
         error: function(error) {
           console.log(error);
+        }
+      });
+    });
+
+    //Edit expense
+    $('#edit-expense-form').on('submit', function(e) {
+      console.log("TEST");
+      e.preventDefault();
+      var data = objectifyForm($(this));
+      var url = $(this).attr('action');
+      console.log(url);
+      $.ajax({
+        url: url,
+        type: "PUT",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        success: function(data, status) {
+          data = data.expense;
+          var currentHref = window.location.href;
+          // wondow.location.href = currentHref.replace('register', 'login');
+          var $tableRowHtml = '<td>' +
+            data.title + '</td><td>' + data.description +
+            '</td><td><span class="label label-success">' + data.category +
+            '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td>';
+          $('#' + data._id).html($tableRowHtml);
+        },
+        error: function(error) {
+          console.log(error);
+        }
+      });
+    });
+
+    //Delete expense
+    $(document).on('click', '.trash-expense', function(e) {
+      e.preventDefault();
+      var expenseId = $(this).closest("tr").attr("id");
+      var userId = $(this).closest("table").attr("userid");
+      $.ajax({
+        url: '/users/' + userId + '/costs/' + expenseId,
+        type: 'DELETE',
+        success: function(result) {
+          $('#' + expenseId).remove();
+        }
+      });
+    });
+
+
+    //--------------MODALS-------------------//
+    //Edit expense
+    $('.edit-expense').on('click', function() {
+      var expenseId = $(this).closest('tr').attr('id');
+      var userId = $(this).closest('table').attr('data-userId');
+      var title = $(this).closest('tr').find('.title').html();
+      var description = $(this).closest('tr').find('.description').html();
+      var category = $(this).closest('tr').find('.category span').html();
+      var amount = $(this).closest('tr').find('.amount').html();
+      var date = $(this).closest('tr').find('.date').html();
+      $('#modal-edit-expense form').attr({
+        'action': '/users/' + userId + '/costs/' + expenseId
+      });
+      $('#modal-edit-expense').find('input[name="title"]').val(title);
+      $('#modal-edit-expense').find('input[name="description"]').val(description);
+      $('#modal-edit-expense').find('select[name="category"]').val(category);
+      $('#modal-edit-expense').find('input[name="amount"]').val(amount);
+      $('#modal-edit-expense').find('input[name="date"]').val(date);
+    });
+    //Trash expense
+    $(document).on('click', '.ask-trash-expense', function(e) {
+      e.preventDefault();
+      var expenseId = $(this).closest('tr').attr('id');
+      var userId = $(this).closest('table').attr('data-userId');
+      var title = $(this).closest('tr').find('.title').html();
+      $('#modal-trash-expense').find('.modal-title').html(title);
+      $.ajax({
+        url: '/users/' + userId + '/costs/' + expenseId,
+        type: 'DELETE',
+        success: function(result) {
+          $('#' + expenseId).remove();
         }
       });
     });
