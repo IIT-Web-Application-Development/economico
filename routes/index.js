@@ -8,6 +8,33 @@ router.get('/login', function(req, res, next) {
   res.render('login', {});
 });
 
+router.post('/login', function(req,res,next){
+
+  var username = req.body.username;
+  var password = req.body.password;
+  console.log("username: " + username);
+  console.log("password: "  + password);
+
+  User.findOne({
+    '_id': username,
+    'pass': password
+  },function(err, usr){
+    if(err){
+      console.log("ERROR in finding user: " + err);
+      res.status(500).json({
+        'message': 'Internal Error in Finding User'
+      });
+    }else if(usr !== null){
+      console.log("The user exists");
+      res.status(200).send();
+    }else if(usr === null){
+      console.log("The user doesnt exist");
+      res.status(404).send();
+    }
+  });
+  
+});
+
 /* GET register page. */
 router.get('/register', function(req, res, next) {
   console.log('Register page');
