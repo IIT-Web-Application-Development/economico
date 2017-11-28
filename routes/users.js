@@ -56,6 +56,7 @@ router.route('/')
         
     } else{
       console.log("User Saved Successfully");
+      req.session.userId = user._id;
       res.status(200).json({"message": 'ok' ,user:user});
     }
   });

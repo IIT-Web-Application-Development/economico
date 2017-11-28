@@ -64,36 +64,17 @@ $.noConflict();
         contentType: "application/json",
         statusCode:{
           200: function(response){
-            console.log("You are logged in");
+            window.location.href = currentHref.replace('login', 'login');
           },
-          404: function(response){
+          401: function(response){
             console.log("Username or password wrong");
           },
           500: function(response){
             console.log(response);
           }
         }
-        /*success: function(theData, status) {
-          if(status === 'success'){
-            console.log("Username or password wrong");
-          }else if(status === 200){
-            console.log("successfuly login");
-          }
-          var currentHref = window.location.href;
-          // wondow.location.href = currentHref.replace('register', 'login');
-          // console.log("You have been successfully logged in");
-        },
-        error: function(error) {
-          console.log(error);
-        }*/
       });
     });
-
-
-
-
-
-
 
 
     //-------------CRUD-----------------//

@@ -10,7 +10,7 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', function(req,res,next){
 
-  var username = req.body.username;
+ /* var username = req.body.username;
   var password = req.body.password;
   console.log("username: " + username);
   console.log("password: "  + password);
@@ -31,8 +31,19 @@ router.post('/login', function(req,res,next){
       console.log("The user doesnt exist");
       res.status(404).send();
     }
-  });
-  
+  });*/
+
+
+
+  User.authenticate(req.body.username, req.body.password, function (error, user) {
+      if (error || !user) {
+        console.log("There is an error");
+        res.status(401).send();
+      } else {
+        req.session.userId = user._id;
+        res.status(200).send({user._id});
+      }
+    });
 });
 
 /* GET register page. */
