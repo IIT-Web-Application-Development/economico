@@ -2,30 +2,16 @@ $.noConflict();
 
 (function($) {
 
-  var categories = [{
-      name: "Education",
-      label: 'grey'
-    },
-    {
-      name: "Groceries",
-      label: 'green'
-    },
-    {
-      name: "Clothing",
-      label: 'red'
-    },
-    {
-      name: "Bills",
-      label: 'orange'
-    },
-    {
-      name: "Travel",
-      label: 'aqua'
-    }
-  ];
-
   $(document).ready(function() {
     "use strict";
+
+    //-----------------UI------------------//
+    //Assign categories color class
+    $('td.category .label').each(function() {
+      var name = $(this).html();
+      var color = $('.categories-list #' + name).attr('data-color');
+      $(this).addClass('label-'+color+'');
+    });
 
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
@@ -342,5 +328,16 @@ $.noConflict();
       }
     }
     return "";
+  }
+
+  //Shuffles an array
+  function shuffle(array) {
+    var j, temp, i;
+    for (i = array.length - 1; i > 0; i--) {
+      j = Math.floor(Math.random() * (i + 1));
+      temp = array[i];
+      array[i] = array[j];
+      a[j] = temp;
+    }
   }
 })(jQuery);

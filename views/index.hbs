@@ -163,49 +163,55 @@
                   </div> --}}
                   <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 
-                    <div class="box-body table-responsive">
-                      <table id="table-expenses" class="table table-hover dataTable" data-userId="{{user._id}}">
-                        <thead>
-                          <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th></th>
+                  <div class="box-body table-responsive">
+                    <ul class="hidden categories-list">
+                      {{#each categories}}
+                        <li id="{{this.name}}" data-color="{{this.color}}"></li>
+                      {{/each}}
+                    </ul>
+
+                    <table id="table-expenses" class="table table-hover dataTable" data-userId="{{user._id}}">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Category</th>
+                          <th>Amount</th>
+                          <th>Date</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each user.costs}}
+                          <tr id="{{this._id}}">
+                            <td class="title">{{this.title}}</td>
+                            <td class="description">{{this.description}}</td>
+                            <td class="category"><span class="label">{{this.category}}</span></td>
+                            <td class="amount">${{this.amount}}</td>
+                            <td class="date">{{this.createdAt}}</td>
+                            <td class="tools">
+                              <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
+                              <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
+                            </td>
                           </tr>
-                        </thead>
-                        <tbody>
-                          {{#each user.costs}}
-                            <tr id="{{this._id}}">
-                              <td class="title">{{this.title}}</td>
-                              <td class="description">{{this.description}}</td>
-                              <td class="category"><span class="label label-success">{{this.category}}</span></td>
-                              <td class="amount">${{this.amount}}</td>
-                              <td class="date">{{this.createdAt}}</td>
-                              <td class="tools">
-                                <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
-                                <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
-                              </td>
+                          {{else}}
+                            <tr id="no-data-found">
+                              <td colspan="5">No expenses registered!</td>
                             </tr>
-                            {{else}}
-                              <tr id="no-data-found">
-                                <td colspan="5">No expenses registered!</td>
-                              </tr>
-                          {{/each}}
-                        </tbody>
-                        <tfoot>
-                          <tr>
-                            <th>Title</th>
-                            <th>Description</th>
-                            <th>Category</th>
-                            <th>Amount</th>
-                            <th>Date</th>
-                            <th></th>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
+                        {{/each}}
+                      </tbody>
+                      <tfoot>
+                        <tr>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Category</th>
+                          <th>Amount</th>
+                          <th>Date</th>
+                          <th></th>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
                 </div>
 
                 <div class="chart tab-pane" id="expenses-donut-chart" style="position: relative; height: 300px;">
@@ -251,15 +257,16 @@
                             <textaera class="form-control" name="description" placeholder="i.e. Hardcopy version.">
                           </div>
                           <!-- select -->
-                          <div class="form-group">
-                            <label>Category</label>
-                            <select name="category" class="form-control">
-                              <option value="Education">Education</option>
-                              <option value="Groceries">Groceries</option>
-                              <option value="Bills">Bills</option>
-                              <option value="Travel">Travel</option>
+                          {{#if categories}}
+                            <div class="form-group">
+                              <label>Category</label>
+                              <select name="category" class="form-control">
+                              {{#each categories}}
+                              <option value="{{@index}}">{{@index}}</option>
+                              {{/each}}
                             </select>
-                          </div>
+                            </div>
+                          {{/if}}
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary pull-left">Submit</button>
@@ -304,15 +311,16 @@
                             <textaera class="form-control" name="description" placeholder="i.e. Hardcopy version.">
                           </div>
                           <!-- select -->
-                          <div class="form-group">
-                            <label>Category</label>
-                            <select name="category" class="form-control">
-                              <option>Education</option>
-                              <option>Groceries</option>
-                              <option>Bills</option>
-                              <option>Travel</option>
+                          {{#if categories}}
+                            <div class="form-group">
+                              <label>Category</label>
+                              <select name="category" class="form-control">
+                              {{#each categories}}
+                              <option value="{{@index}}">{{@index}}</option>
+                              {{/each}}
                             </select>
-                          </div>
+                            </div>
+                          {{/if}}
                         </div>
                         <div class="modal-footer">
                           <button type="submit" class="btn btn-primary pull-left">Submit</button>
