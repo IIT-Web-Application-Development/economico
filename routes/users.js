@@ -47,8 +47,13 @@ router.route('/')
 
   user.save(function(err){
     if(err !== null){
-        console.log(err);
-        res.status(500).json({'message':'Internal Error in Saving User'});
+        console.log(err.code);
+        if(err.code === 11000){
+          res.status(500).json({"exists": true});
+        }else{
+          res.status(500).json({'message':'Internal Error in Saving User'});
+        }
+        
     } else{
       console.log("User Saved Successfully");
       res.status(200).json({"message": 'ok' });
