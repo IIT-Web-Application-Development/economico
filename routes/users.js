@@ -45,7 +45,7 @@ router.route('/')
   user.email = info.email;
   user.costs = [];
 
-  user.save(function(err){
+  user.save(function(err,user){
     if(err !== null){
         console.log(err.code);
         if(err.code === 11000){
@@ -56,7 +56,7 @@ router.route('/')
         
     } else{
       console.log("User Saved Successfully");
-      res.status(200).json({"message": 'ok' });
+      res.status(200).json({"message": 'ok' ,user:user});
     }
   });
 });

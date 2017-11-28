@@ -15,9 +15,8 @@ router.route('/')
 
         console.log('keyword: ' + keyword);
 
-    
         var costs = [];
-    
+
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
                 console.log("ERROR: " + err);
@@ -25,7 +24,7 @@ router.route('/')
             } else if (result){
                 if(keyword === undefined){
                     if(beginDate === undefined && endDate === undefined){
-                        result.costs.forEach(function(cost){    
+                        result.costs.forEach(function(cost){
                             var tempCost = {};
                             tempCost.costid = cost._id;
                             tempCost.title = cost.title;
@@ -38,9 +37,9 @@ router.route('/')
                             }
                         });
                     } else{
-                        result.costs.forEach(function(cost){   
+                        result.costs.forEach(function(cost){
                             var d = new Date(cost.date);
-                            var t = d.getTime(); 
+                            var t = d.getTime();
                             if(t >= beginDate && t <= endDate){
                                 var tempCost = {};
                                 tempCost.costid = cost._id;
@@ -57,7 +56,7 @@ router.route('/')
                     }
                 } else{
                     if(beginDate === undefined && endDate === undefined){
-                        result.costs.forEach(function(cost){  
+                        result.costs.forEach(function(cost){
                             if(cost.title.includes(keyword) || cost.description.includes(keyword)){
                                 var tempCost = {};
                                 tempCost.costid = cost._id;
@@ -69,13 +68,13 @@ router.route('/')
                                 if(Object.keys(tempCost).length > 0){
                                     costs.push(tempCost);
                                 }
-                            } 
+                            }
                         });
                     } else{
-                        result.costs.forEach(function(cost){  
+                        result.costs.forEach(function(cost){
                             var d = new Date(cost.date);
-                            var t = d.getTime(); 
-                            if( ( cost.title.includes(keyword) || cost.description.includes(keyword) ) && 
+                            var t = d.getTime();
+                            if( ( cost.title.includes(keyword) || cost.description.includes(keyword) ) &&
                                     (t >= beginDate && t <= endDate) ){
                                 var tempCost = {};
                                 tempCost.costid = cost._id;
@@ -87,17 +86,17 @@ router.route('/')
                                 if(Object.keys(tempCost).length > 0){
                                     costs.push(tempCost);
                                 }
-                            } 
+                            }
                         });
                     }
                 }
-                
+
                 if(costs.length === 0){
                     console.log('No costs for this user');
                     res.status(404).json({'message': 'no cost'});
                 } else {
                     res.status(200).json(costs);
-                }   
+                }
             } else{
                 console.log("User Not Found!");
                 res.status(404).json({'message': 'user not found'});
@@ -111,7 +110,7 @@ router.route('/')
       var user = new User();
       var cost = {};
 
-      console.log('userid: ' + userid);        
+      console.log('userid: ' + userid);
       User.find({_id: userid}, function(err, usr){
           if(err){
               console.log("ERROR: " + err);
@@ -134,15 +133,15 @@ router.route('/')
                     res.status(500).json({'message':'Internal Error in Saving Cost'});
                 } else{
                     console.log("Cost saved!");
-                    res.status(200).json({'message': 'ok'});
+                    res.status(200).json({'message': 'ok',expense:cost});
                 }
             });
-          } else{        
+          } else{
             console.log("User Not Found!");
             res.status(404).json({'message': 'user not found'});
           }
       });
-      
+
     })
     .delete(function(req, res, next) {
       console.log('Deleting all costs for specific user');
@@ -183,14 +182,14 @@ router.route('/:costid')
                         tempCost.description = cost.description;
                         tempCost.category = cost.category;
                         tempCost.date = cost.date;
-                    }            
+                    }
                 });
                 if(tempCost){
                     res.status(200).json(tempCost);
                 } else {
                     console.log('Cost Not Found');
                     res.status(404).json({'message': 'cost not found'});
-                }                
+                }
             } else{
                 console.log("User Not Found!");
                 res.status(404).json({'message': 'user not found'});
@@ -199,19 +198,19 @@ router.route('/:costid')
     })
     .put(function(req, res, next) {
         console.log('Updating specific cost for specific user');
-        
+
         var userid = req.params.userid;
         var costid = parseInt(req.params.costid);
         var costs = [];
         var info = req.body;
         var updated = false;
-        
+
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
                 console.log("ERROR: " + err);
                 res.status(500).json({'message':'Internal Error in finding specific user to update cost'});
             } else if (result){
-                result.costs.forEach(function(cost){  
+                result.costs.forEach(function(cost){
                     if(cost._id === costid){
                         var tempCost = {};
                         updated = true;
@@ -254,9 +253,9 @@ router.route('/:costid')
         var deleted = false;
         var userid = req.params.userid;
         var costid = parseInt(req.params.costid);
-        
+
         var costs = [];
-    
+
         User.findOne({'_id': userid}, 'costs', function(err, result){
             if(err){
                 console.log("ERROR: " + err);
@@ -267,7 +266,7 @@ router.route('/:costid')
                         deleted = true;
                     } else{
                         costs.push(cost);
-                    }                   
+                    }
                 });
                 if(deleted){
                     User.update({'_id': userid}, {'costs': costs}, function(err, doc){
