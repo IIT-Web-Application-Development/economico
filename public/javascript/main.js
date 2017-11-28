@@ -147,6 +147,7 @@ $.noConflict();
         contentType: "application/json",
         success: function(data, status) {
           data = data.expense;
+          console.log(data);
           var currentHref = window.location.href;
           var $tableRowHtml = '<td>' +
             data.title + '</td><td>' + data.description +

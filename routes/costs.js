@@ -274,7 +274,6 @@ router.route('/:costid')
             }
           } else {
             costs.push(cost);
-            updatedCost=cost;
           }
         });
         if (updated) {
