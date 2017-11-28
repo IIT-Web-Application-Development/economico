@@ -46,7 +46,7 @@ $.noConflict();
           $('.login-btn').before('</br><p class="result">You\'ve been successfully registered.</p>');
           $('.login-btn').html('Login here.');
           console.log(data);
-          setCookie('ec_username', data.user._id,360);
+          setCookie('ec_username', data.user._id, 360);
         },
         error: function(error) {
           console.log(error);
@@ -106,6 +106,9 @@ $.noConflict();
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
+      var d = new Date();
+      var n = d.toISOString();
+      data.createdAt = n;
       $.ajax({
         url: "/users/" + data.userid + "/costs/",
         type: "POST",
@@ -113,13 +116,14 @@ $.noConflict();
         contentType: "application/json",
         success: function(data, status) {
           data = data.expense;
+          var createdAt = new Date(data.createdAt);
           var currentHref = window.location.href;
           // wondow.location.href = currentHref.replace('register', 'login');
           var $tableRow = '<tr id="' + data._id + '"><td>' +
             data.title + '</td><td>' + data.description +
             '</td><td><span class="label label-success">' + data.category +
             '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td></tr>';
-          $('#expenses-list tbody').append($tableRow);
+          $('#expenses-list tbody').prepend($tableRow);
         },
         error: function(error) {
           console.log(error);
@@ -129,9 +133,11 @@ $.noConflict();
 
     //Edit expense
     $('#edit-expense-form').on('submit', function(e) {
-      console.log("TEST");
       e.preventDefault();
       var data = objectifyForm($(this));
+      var d = new Date();
+      var n = d.toISOString();
+      data.createdAt = n;
       var url = $(this).attr('action');
       console.log(url);
       $.ajax({
@@ -141,6 +147,7 @@ $.noConflict();
         contentType: "application/json",
         success: function(data, status) {
           data = data.expense;
+          console.log(data);
           var currentHref = window.location.href;
           var $tableRowHtml = '<td>' +
             data.title + '</td><td>' + data.description +
@@ -177,8 +184,8 @@ $.noConflict();
       var title = $(this).closest('tr').find('.title').html();
       var description = $(this).closest('tr').find('.description').html();
       var category = $(this).closest('tr').find('.category span').html();
-      var amount = $(this).closest('tr').find('.amount').html();
-      var date = $(this).closest('tr').find('.date').html();
+      var amount = $(this).closest('tr').find('.amount').html().replace('$', '');
+
       $('#modal-edit-expense form').attr({
         'action': '/users/' + userId + '/costs/' + expenseId
       });
@@ -186,7 +193,6 @@ $.noConflict();
       $('#modal-edit-expense').find('input[name="description"]').val(description);
       $('#modal-edit-expense').find('select[name="category"]').val(category);
       $('#modal-edit-expense').find('input[name="amount"]').val(amount);
-      $('#modal-edit-expense').find('input[name="date"]').val(date);
     });
     //Trash expense
     $(document).on('click', '.ask-trash-expense', function(e) {

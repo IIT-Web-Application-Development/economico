@@ -181,7 +181,7 @@
                             <td class="description">{{this.description}}</td>
                             <td class="category"><span class="label label-success">{{this.category}}</span></td>
                             <td class="amount">${{this.amount}}</td>
-                            <td class="date">{{this.date}}</td>
+                            <td class="date">{{this.createdAt}}</td>
                             <td class="tools">
                               <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
                               <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
@@ -277,7 +277,8 @@
                       <div class="modal-body">
                         <!-- form start -->
                         <form id="edit-expense-form" role="form" method="post" action="/costs/">
-                          <input required type="hidden" name="userid" value="{{user._id}}">
+                          {{!-- <input required type="hidden" name="userid" value="{{user._id}}">
+                          <input required type="hidden" name="costid" value=""> --}}
                           <div class="form-group">
                             <label for="input-title">Title</label>
                             <input required type="text" class="form-control" name="title" placeholder="i.e. War and Peace book - Amazon">
