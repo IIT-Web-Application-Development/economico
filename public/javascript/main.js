@@ -65,14 +65,14 @@ $.noConflict();
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
-        statusCode:{
-          200: function(response){
+        statusCode: {
+          200: function(response) {
             console.log("You are logged in");
           },
-          404: function(response){
+          404: function(response) {
             console.log("Username or password wrong");
           },
-          500: function(response){
+          500: function(response) {
             console.log(response);
           }
         }
@@ -124,6 +124,7 @@ $.noConflict();
             '</td><td><span class="label label-success">' + data.category +
             '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td></tr>';
           $('#expenses-list tbody').prepend($tableRow);
+          $('#modal-add-expense').modal('toggle');
         },
         error: function(error) {
           console.log(error);
@@ -154,6 +155,7 @@ $.noConflict();
             '</td><td><span class="label label-success">' + data.category +
             '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td>';
           $('#' + data._id).html($tableRowHtml);
+          $('#modal-edit-expense').modal('toggle');
         },
         error: function(error) {
           console.log(error);
@@ -164,13 +166,14 @@ $.noConflict();
     //Delete expense
     $(document).on('click', '.trash-expense', function(e) {
       e.preventDefault();
-      var expenseId = $(this).closest("tr").attr("id");
-      var userId = $(this).closest("table").attr("userid");
+      var expenseId = $('#modal-trash-expense').attr("data-expenseId");
+      var userId = $('#modal-trash-expense').attr("data-userid");
       $.ajax({
         url: '/users/' + userId + '/costs/' + expenseId,
         type: 'DELETE',
         success: function(result) {
           $('#' + expenseId).remove();
+          $('#modal-hide-expense').modal('toggle');
         }
       });
     });
@@ -201,12 +204,9 @@ $.noConflict();
       var userId = $(this).closest('table').attr('data-userId');
       var title = $(this).closest('tr').find('.title').html();
       $('#modal-trash-expense').find('.modal-title').html(title);
-      $.ajax({
-        url: '/users/' + userId + '/costs/' + expenseId,
-        type: 'DELETE',
-        success: function(result) {
-          $('#' + expenseId).remove();
-        }
+      $('#modal-trash-expense').attr({
+        'data-userid': userId,
+        'data-expenseId': expenseId
       });
     });
 
@@ -287,11 +287,11 @@ $.noConflict();
     $(function() {
       $('#table-expenses').DataTable({
         'paging': true,
-        'lengthChange': false,
+        'lengthChange': true,
         'searching': true,
         'ordering': true,
         'info': true,
-        'autoWidth': false
+        'autoWidth': true
       })
     })
 
