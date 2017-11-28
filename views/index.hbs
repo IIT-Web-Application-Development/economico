@@ -162,39 +162,50 @@
                     </div>
                   </div> --}}
                   <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                  <div class="table-responsive no-padding">
-                    <table id="table-expenses" class="table table-hover" data-userId="{{user._id}}">
-                      <thead>
-                        <tr>
-                          <th>Title</th>
-                          <th>Description</th>
-                          <th>Category</th>
-                          <th>Amount</th>
-                          <th>Date</th>
-                          <th></th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {{#each user.costs}}
-                          <tr id="{{this._id}}">
-                            <td class="title">{{this.title}}</td>
-                            <td class="description">{{this.description}}</td>
-                            <td class="category"><span class="label label-success">{{this.category}}</span></td>
-                            <td class="amount">${{this.amount}}</td>
-                            <td class="date">{{this.createdAt}}</td>
-                            <td class="tools">
-                              <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
-                              <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
-                            </td>
+
+                    <div class="box-body table-responsive">
+                      <table id="table-expenses" class="table table-hover dataTable" data-userId="{{user._id}}">
+                        <thead>
+                          <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th></th>
                           </tr>
-                          {{else}}
-                            <tr id="no-data-found">
-                              <td colspan="5">No expenses registered!</td>
+                        </thead>
+                        <tbody>
+                          {{#each user.costs}}
+                            <tr id="{{this._id}}">
+                              <td class="title">{{this.title}}</td>
+                              <td class="description">{{this.description}}</td>
+                              <td class="category"><span class="label label-success">{{this.category}}</span></td>
+                              <td class="amount">${{this.amount}}</td>
+                              <td class="date">{{this.createdAt}}</td>
+                              <td class="tools">
+                                <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
+                                <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
+                              </td>
                             </tr>
-                        {{/each}}
-                      </tbody>
-                    </table>
-                  </div>
+                            {{else}}
+                              <tr id="no-data-found">
+                                <td colspan="5">No expenses registered!</td>
+                              </tr>
+                          {{/each}}
+                        </tbody>
+                        <tfoot>
+                          <tr>
+                            <th>Title</th>
+                            <th>Description</th>
+                            <th>Category</th>
+                            <th>Amount</th>
+                            <th>Date</th>
+                            <th></th>
+                          </tr>
+                        </tfoot>
+                      </table>
+                    </div>
                 </div>
 
                 <div class="chart tab-pane" id="expenses-donut-chart" style="position: relative; height: 300px;">
