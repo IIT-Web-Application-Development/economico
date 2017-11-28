@@ -39,11 +39,14 @@ $.noConflict();
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
-        success: function(newUser, status) {
+        success: function(data, status) {
           var currentHref = window.location.href;
           // wondow.location.href = currentHref.replace('register', 'login');
+          $('#register-form input').val('');
           $('.login-btn').before('</br><p class="result">You\'ve been successfully registered.</p>');
           $('.login-btn').html('Login here.');
+          console.log(data);
+          setCookie('ec_username', data.user._id,360);
         },
         error: function(error) {
           console.log(error);
@@ -94,7 +97,6 @@ $.noConflict();
         success: function(data, status) {
           data = data.expense;
           var currentHref = window.location.href;
-          // wondow.location.href = currentHref.replace('register', 'login');
           var $tableRowHtml = '<td>' +
             data.title + '</td><td>' + data.description +
             '</td><td><span class="label label-success">' + data.category +
@@ -243,6 +245,11 @@ $.noConflict();
     })
 
     //-----------------LOGIN---------------------//
+    if ($('.login-page').length) {
+      var userName = getCookie('ec_username');
+      $('input[name="username"]').val(userName);
+      $('input[name="email"]').val(userName);
+    }
     $('.icheck input').iCheck({
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
@@ -260,5 +267,29 @@ $.noConflict();
       returnArray[formData[i]['name']] = formData[i]['value'];
     }
     return returnArray;
+  }
+
+  //Set cookie, w3s version
+  function setCookie(cname, cvalue, exdays) {
+    var d = new Date();
+    d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    var expires = "expires=" + d.toUTCString();
+    document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+  }
+  //Get cookie, w3s version
+  function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
+      while (c.charAt(0) == ' ') {
+        c = c.substring(1);
+      }
+      if (c.indexOf(name) == 0) {
+        return c.substring(name.length, c.length);
+      }
+    }
+    return "";
   }
 })(jQuery);
