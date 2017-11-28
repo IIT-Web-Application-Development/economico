@@ -94,9 +94,12 @@
         </a>
           </li>
           <li>
-            <a href="#">
-          <i class="fa fa-gears"></i> <span>Settings</span>
-        </a>
+            <a href="#"><i class="fa fa-gears"></i> <span>Settings</span>
+            </a>
+          </li>
+          <li>
+            <a href="{{user._id}}/trash/"><i class="fa fa-trash"></i> <span>Trash</span>
+            </a>
           </li>
           <li>
             <!-- search form -->
@@ -150,37 +153,50 @@
               <div class="tab-content no-padding">
                 <!-- Espenses - Default: List -->
                 <div class="chart tab-pane active" id="expenses-list" style="position: relative; height: 300px;">
-                  <!-- TO DO List -->
+                  {{!-- <div class="box-header">
+                    <div class="input-group input-group-sm pull-right" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
+                      <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                      </div>
+                    </div>
+                  </div> --}}
                   <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
-                  <ul class="todo-list">
-                    <li>
-                      <span class="handle">
-                              <i class="fa fa-ellipsis-v"></i>
-                              <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                      <input type="checkbox" value="">
-                      <span class="text">Let theme shine like a star</span>
-                      <small class="label label-success"><i class="fa fa-clock-o"></i> 3 days</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                    <li>
-                      <span class="handle">
-                              <i class="fa fa-ellipsis-v"></i>
-                              <i class="fa fa-ellipsis-v"></i>
-                            </span>
-                      <input type="checkbox" value="">
-                      <span class="text">Check your messages and notifications</span>
-                      <small class="label label-primary"><i class="fa fa-clock-o"></i> 1 week</small>
-                      <div class="tools">
-                        <i class="fa fa-edit"></i>
-                        <i class="fa fa-trash-o"></i>
-                      </div>
-                    </li>
-                  </ul>
+                  <div class="table-responsive no-padding">
+                    <table id="table-expenses" class="table table-hover" data-userId="{{user._id}}">
+                      <thead>
+                        <tr>
+                          <th>Title</th>
+                          <th>Description</th>
+                          <th>Category</th>
+                          <th>Amount</th>
+                          <th>Date</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {{#each user.costs}}
+                          <tr id="{{this._id}}">
+                            <td class="title">{{this.title}}</td>
+                            <td class="description">{{this.description}}</td>
+                            <td class="category"><span class="label label-success">{{this.category}}</span></td>
+                            <td class="amount">${{this.amount}}</td>
+                            <td class="date">{{this.date}}</td>
+                            <td class="tools">
+                              <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
+                              <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
+                            </td>
+                          </tr>
+                          {{else}}
+                            <tr id="no-data-found">
+                              <td colspan="5">No expenses registered!</td>
+                            </tr>
+                        {{/each}}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
+
                 <div class="chart tab-pane" id="expenses-donut-chart" style="position: relative; height: 300px;">
                   <!-- DONUT CHART -->
                   <div class="box-body">
