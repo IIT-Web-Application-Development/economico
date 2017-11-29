@@ -34,25 +34,30 @@
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
-      console.log("Form submitted! Let's get the info for", username);
-      $.ajax({
-        url: "/users/",
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        success: function(data, status) {
-          var currentHref = window.location.href;
-          // wondow.location.href = currentHref.replace('register', 'login');
-          $('#register-form input').val('');
-          $('.login-btn').before('</br><p class="result">You\'ve been successfully registered.</p>');
-          $('.login-btn').html('Login here.');
-          console.log(data);
-          setCookie('ec_username', data.user._id, 360);
-        },
-        error: function(error) {
-          console.log(error);
-        }
-      });
+      if (data['password'] === data['retype-password']) {
+
+        console.log("Form submitted! Let's get the info for", username);
+        $.ajax({
+          url: "/users/",
+          type: "POST",
+          data: JSON.stringify(data),
+          contentType: "application/json",
+          success: function(data, status) {
+            var currentHref = window.location.href;
+            // wondow.location.href = currentHref.replace('register', 'login');
+            $('#register-form input').val('');
+            $('.login-btn').before('</br><p class="result">You\'ve been successfully registered.</p>');
+            $('.login-btn').html('Login here.');
+            console.log(data);
+            setCookie('ec_username', data.user._id, 360);
+          },
+          error: function(error) {
+            console.log(error);
+          }
+        });
+      } else {
+        $('#register-form').after("</br><p label label-warning>Passwords don't match!</p>");
+      }
     });
 
     //-------------CRUD-----------------//
