@@ -137,7 +137,8 @@
       <section class="content-header">
         <h1>
         Dashboard
-        <small>Control panel</small>
+        <small class="total-spent">
+        </small>
       </h1>
         <ol class="breadcrumb">
           <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -159,7 +160,9 @@
                   <li class="active"><a href="#expenses-list" data-toggle="tab">List</a></li>
                   <li><a href="#expenses-doughnut-chart" class="is-chart" data-toggle="tab">Doughnut</a></li>
                   <li><a href="#expenses-bar-chart" class="is-chart" data-toggle="tab">Bars</a></li>
-                  <li class="pull-left header"><i class="fa fa-inbox"></i> Expenses</li>
+                  <li class="pull-left header"><i class="fa fa-inbox"></i> Spent:
+                    <small id="total"> ${{user.total}}</small>
+                  </li>
                 </ul>
               </div>
               <!-- /.nav-tabs-custom -->
@@ -195,7 +198,7 @@
                             <td class="description">{{this.description}}</td>
                             <td class="category"><span class="label">{{this.category}}</span></td>
                             <td class="amount">${{this.amount}}</td>
-                            <td class="date">{{this.createdAt}}</td>
+                            <td class="createdAt">{{this.createdAt}}</td>
                             <td class="tools">
                               <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
                               <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
