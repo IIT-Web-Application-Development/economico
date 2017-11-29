@@ -118,6 +118,17 @@
       <!-- /.sidebar -->
     </aside>
 
+
+    {{!-- JS DATA --}}
+    <ul class="hidden categories-list">
+      {{#each categories}}
+        <li id="{{this.name}}" data-color="{{this.color}}"></li>
+      {{/each}}
+    </ul>
+    <ul class="hidden totals">
+      <li class="total"></li>
+    </ul>
+
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -144,8 +155,8 @@
                 <!-- Tabs within a box -->
                 <ul class="nav nav-tabs pull-right">
                   <li class="active"><a href="#expenses-list" data-toggle="tab">List</a></li>
-                  <li><a href="#expenses-donut-chart" class="is-chart" data-toggle="tab">Pie</a></li>
-                  <li><a href="#expenses-bars-chart" class="is-chart" data-toggle="tab">Bars</a></li>
+                  <li><a href="#expenses-doughnut-chart" class="is-chart" data-toggle="tab">Doughnut</a></li>
+                  <li><a href="#expenses-bar-chart" class="is-chart" data-toggle="tab">Bars</a></li>
                   <li class="pull-left header"><i class="fa fa-inbox"></i> Expenses</li>
                 </ul>
               </div>
@@ -164,12 +175,6 @@
                   <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 
                   <div class="box-body table-responsive">
-                    <ul class="hidden categories-list">
-                      {{#each categories}}
-                        <li id="{{this.name}}" data-color="{{this.color}}"></li>
-                      {{/each}}
-                    </ul>
-
                     <table id="table-expenses" class="table table-hover dataTable" data-userId="{{user._id}}">
                       <thead>
                         <tr>
@@ -214,14 +219,19 @@
                   </div>
                 </div>
 
-                <div class="chart tab-pane" id="expenses-donut-chart" style="position: relative; height: 300px;">
-                  <!-- DONUT CHART -->
+                <div class="chart tab-pane" id="expenses-doughnut-chart" style="position: relative; height: 300px;">
+                  <!-- doughnut CHART -->
                   <div class="box-body">
-                    <canvas id="pieChart" style="height:250px"></canvas>
+                    <canvas id="doughnutChart"></canvas>
                   </div>
                   <!-- /.box-body -->
                 </div>
-                <div class="chart tab-pane" id="expenses-bars-chart" style="position: relative; height: 300px;"></div>
+                <div class="chart tab-pane" id="expenses-bar-chart" style="position: relative;">
+                  <!-- doughnut CHART -->
+                  <div class="box-body">
+                    <canvas id="barChart"></canvas>
+                  </div>
+                </div>
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix no-border">
