@@ -41,5 +41,16 @@
     });
   });
 
+  //------------FUNCTIONS-----------------------//
+
+  //serialize data function
+  function objectifyForm($form) {
+    var formData = $form.serializeArray();
+    var returnArray = {};
+    for (var i = 0; i < formData.length; i++) {
+      returnArray[formData[i]['name']] = formData[i]['value'];
+    }
+    return returnArray;
+  }
 
 })(jQuery);
