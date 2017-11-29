@@ -184,50 +184,45 @@
       });
     });
 
+
     //--------------CHARTS------------------//
     $('.is-chart').on('click', function() {
       var href = $(this).attr('href');
       generateChart(href);
-
     });
 
     function generateChart(href) {
       $(href).addClass('active');
       if (href == "#expenses-doughnut-chart" && !$(href).hasClass('generated')) {
-        $(href).addClass('generated')
-        console.log(href);
-        console.log("TEST");
+        $(href).addClass('generated');
         //-------------
         //- PIE CHART -
         //-------------
         // Get context with jQuery - using jQuery's .get() method.
-        var doughnutChartCanvas = $('#doughnutChart').get(0).getContext('2d')
-        var doughnutChart = new Chart(doughnutChartCanvas)
-        var DoughnutData = [{
-            value: 405,
-            color: '#f56954',
-            highlight: '#f56954',
-            label: 'Travel($)'
-          },
-          {
-            value: 11000,
-            color: '#00a65a',
-            highlight: '#00a65a',
-            label: 'Education($)'
-          },
-          {
-            value: 560,
-            color: '#f39c12',
-            highlight: '#f39c12',
-            label: 'Bills($)'
-          },
-          {
-            value: 160,
-            color: '#00c0ef',
-            highlight: '#00c0ef',
-            label: 'Groceries($)'
+        var doughnutChartCanvas = $('#doughnutChart').get(0).getContext('2d');
+        var doughnutChart = new Chart(doughnutChartCanvas);
+        var DoughnutData = [
+          //   {
+          //   value: 405,
+          //   color: '#f56954',
+          //   highlight: '#ffffff',
+          //   label: 'Travel($)'
+          // }
+        ];
+
+        categories.forEach(function(category) {
+          console.log('category');
+          console.log(category);
+          var dataItem = {
+            value: category.total,
+            color: category.color,
+            highlight: category.color,
+            label: category.name
           }
-        ]
+          DoughnutData.push(dataItem);
+        });
+        console.log(DoughnutData);
+
         var doughnutOptions = {
           //Boolean - Whether we should show a stroke on each segment
           segmentShowStroke: true,
@@ -249,12 +244,15 @@
           responsive: true,
           // Boolean - whether to maintain the starting aspect ratio or not when responsive, if set to false, will take up entire container
           maintainAspectRatio: true,
+          legends: true,
           //String - A legend template
-          legendTemplate: '<ul class="<%=name.toLowerCase()%>-legend"><% for (var i=0; i<segments.length; i++){%><li><span style="background-color:<%=segments[i].fillColor%>"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>'
+          legendTemplate: "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
         }
         //Create doughnut or douhnut chart
         // You can switch between doughnut and douhnut using the method below.
-        doughnutChart.Doughnut(DoughnutData, doughnutOptions)
+        doughnutChart.Doughnut(DoughnutData, doughnutOptions);
+        // $('#doughnutLegend').html(doughnutChart.generateLegend());
+
       } else if (href == "#expenses-bar-chart" && !$(href).hasClass('generated')) {
         $(href).addClass('generated');
         //-------------
