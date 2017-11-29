@@ -141,10 +141,14 @@ router.route('/')
         usr[0].costs.push(cost);
         user.costs = usr[0].costs;
 
+
+        total = parseFloat(usr[0].total) + parseFloat(cost.amount);
+
         User.update({
           '_id': userid
         }, {
-          'costs': user.costs
+          'costs': user.costs,
+          'total': parseFloat(total)
         }, function(err, doc) {
           if (err !== null) {
             console.log(err);
@@ -155,7 +159,8 @@ router.route('/')
             console.log("Cost saved!");
             res.status(200).json({
               'message': 'ok',
-              expense: cost
+              expense: cost,
+              total: total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
             });
           }
         });
@@ -248,6 +253,7 @@ router.route('/:costid')
     var info = req.body;
     var updated = false;
     var updatedCost;
+    var total;
 
     User.findOne({
       '_id': userid
@@ -270,7 +276,12 @@ router.route('/:costid')
             tempCost.category = info.category;
             if (Object.keys(tempCost).length > 0) {
               costs.push(tempCost);
-              updatedCost=tempCost;
+              updatedCost = tempCost;
+              if (result.total) {
+                total = result.total - cost.amount + parseFloat(updatedCost.amount);
+              } else {
+                total = parseFloat(updatedCost.amount);
+              }
             }
           } else {
             costs.push(cost);
@@ -280,7 +291,8 @@ router.route('/:costid')
           User.update({
             '_id': userid
           }, {
-            'costs': costs
+            'costs': costs,
+            'total': parseFloat(total)
           }, function(err, result) {
             if (err) {
               console.log("ERROR: " + err);
@@ -291,7 +303,9 @@ router.route('/:costid')
               console.log('Cost Updated');
               res.status(200).json({
                 'message': 'cost updated',
-                expense: updatedCost
+                expense: updatedCost,
+                total: total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+
               });
             }
           });
@@ -338,7 +352,7 @@ router.route('/:costid')
           User.update({
             '_id': userid
           }, {
-            'costs': costs
+            'costs': costs,
           }, function(err, doc) {
             if (err !== null) {
               console.log(err);
