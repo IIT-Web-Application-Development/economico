@@ -9,43 +9,48 @@ router.get('/login', function(req, res, next) {
   res.render('login', {});
 });
 
-router.post('/login', function(req,res,next){
+Handlebars.registerHelper('formatNumber', function(context, options) {
 
- /* var username = req.body.username;
-  var password = req.body.password;
-  console.log("username: " + username);
-  console.log("password: "  + password);
-
-  User.findOne({
-    '_id': username,
-    'pass': password
-  },function(err, usr){
-    if(err){
-      console.log("ERROR in finding user: " + err);
-      res.status(500).json({
-        'message': 'Internal Error in Finding User'
-      });
-    }else if(usr !== null){
-      console.log("The user exists");
-      res.status(200).send();
-    }else if(usr === null){
-      console.log("The user doesnt exist");
-      res.status(404).send();
-    }
-  });*/
-
-
-
-  User.authenticate(req.body.username, req.body.password, function (error, user) {
-      if (error || !user) {
-        console.log("There is an error");
-        res.status(401).send();
-      } else {
-        req.session.userId = user._id;
-        res.status(200).send({user._id});
-      }
-    });
 });
+// router.post('/login', function(req, res, next) {
+//
+//   /* var username = req.body.username;
+//    var password = req.body.password;
+//    console.log("username: " + username);
+//    console.log("password: "  + password);
+//
+//    User.findOne({
+//      '_id': username,
+//      'pass': password
+//    },function(err, usr){
+//      if(err){
+//        console.log("ERROR in finding user: " + err);
+//        res.status(500).json({
+//          'message': 'Internal Error in Finding User'
+//        });
+//      }else if(usr !== null){
+//        console.log("The user exists");
+//        res.status(200).send();
+//      }else if(usr === null){
+//        console.log("The user doesnt exist");
+//        res.status(404).send();
+//      }
+//    });*/
+//
+//
+//
+//   User.authenticate(req.body.username, req.body.password, function(error, user) {
+//     if (error || !user) {
+//       console.log("There is an error");
+//       res.status(401).send();
+//     } else {
+//       req.session.userId = user._id;
+//       res.status(200).send({
+//         user._id
+//       });
+//     }
+//   });
+// });
 
 /* GET register page. */
 router.get('/register', function(req, res, next) {
