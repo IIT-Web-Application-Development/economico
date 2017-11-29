@@ -1,4 +1,4 @@
-$.noConflict();
+// $.noConflict();
 
 (function($) {
 
@@ -6,6 +6,18 @@ $.noConflict();
     "use strict";
 
     //-----------------UI------------------//
+    //Create categories array from categories List
+    var categories = [];
+    $('.categories-list li').each(function() {
+      var category = {
+        name: $(this).attr('id'),
+        color: $(this).attr('data-color'),
+        total: $(this).attr('data-total')
+      }
+      // categories[$(this).attr('id')] = category;
+      categories.push(category);
+    });
+
     //Assign categories color class
     $('td.category .label').each(function() {
       var name = $(this).html();
