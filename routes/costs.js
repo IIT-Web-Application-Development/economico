@@ -34,7 +34,7 @@ router.route('/')
           if (beginDate === undefined && endDate === undefined) {
             result.costs.forEach(function(cost) {
               var tempCost = {};
-              tempCost.costid = cost._id;
+              tempCost._id = cost._id;
               tempCost.title = cost.title;
               tempCost.description = cost.description;
               tempCost.amount = cost.amount;
@@ -50,7 +50,7 @@ router.route('/')
               var t = d.getTime();
               if (t >= beginDate && t <= endDate) {
                 var tempCost = {};
-                tempCost.costid = cost._id;
+                tempCost._id = cost._id;
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
@@ -67,7 +67,7 @@ router.route('/')
             result.costs.forEach(function(cost) {
               if (cost.title.includes(keyword) || cost.description.includes(keyword)) {
                 var tempCost = {};
-                tempCost.costid = cost._id;
+                tempCost._id = cost._id;
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
@@ -85,7 +85,7 @@ router.route('/')
               if ((cost.title.includes(keyword) || cost.description.includes(keyword)) &&
                 (t >= beginDate && t <= endDate)) {
                 var tempCost = {};
-                tempCost.costid = cost._id;
+                tempCost._id = cost._id;
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
