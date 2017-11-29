@@ -151,7 +151,7 @@
         <!-- Main row -->
         <div class="row">
           <!-- Left col -->
-          <section class="col-lg-7 connectedSortable">
+          <section class="col-lg-9 connectedSortable">
             <div class="box box-primary">
               <!-- Custom tabs (Charts with tabs)-->
               <div class="nav-tabs-custom">
@@ -382,26 +382,24 @@
             </div>
           </section>
           <!-- /.Left col -->
+          <!-- Small boxes (Stat box) -->
+          <section class="col-lg-3 col-xs-6">
+            {{#each categories}}
+              <!-- small box -->
+              <div id="box-{{this.name}}" class="small-box col-12" style="background-color:{{this.color}}; color:#ffffff">
+                <div class="inner">
+                  <h3>${{this.total}}</h3>
+                  <p>{{this.name}}</p>
+                </div>
+                <div class="icon">
+                  <i class="ion {{this.icon}}"></i>
+                </div>
+              </div>
+            {{/each}}
+          </section>
+
         </div>
         <!-- /.row (main row) -->
-
-        <!-- Small boxes (Stat box) -->
-        {{!-- <div class="row">
-          <div class="col-lg-3 col-xs-6">
-            <!-- small box -->
-            <div class="small-box bg-aqua">
-              <div class="inner">
-                <h3>$</h3>
-                <p>}</p>
-              </div>
-              <div class="icon">
-                <i class="ion ion-bag"></i>
-              </div>
-              <a href="#" class="small-box-footer">More <i class="fa fa-arrow-circle-right"></i></a>
-            </div>
-          </div>
-        </div> --}}
-        <!-- /.row -->
 
       </section>
       <!-- /.content -->
