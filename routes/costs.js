@@ -11,11 +11,13 @@ router.route('/')
   .get(function(req, res, next) {
     console.log('getting costs for specific user');
     var userid = req.params.userid;
-    var keyword = req.query.keyword;
-    var beginDate = req.query.begindate === undefined ? undefined : parseInt(req.query.begindate);
-    var endDate = req.query.enddate === undefined ? undefined : parseInt(req.query.enddate);;
+    var keyword = req.query.keyword === undefined ? "" : req.query.keyword;
+    var beginDate = req.query.from === undefined ? 0 : parseInt(req.query.from);
+    var endDate = req.query.to === undefined ? Date.now() : parseInt(req.query.to);
 
     console.log('keyword: ' + keyword);
+    console.log('beginDate: ' + beginDate);
+    console.log('endDate: ' + endDate);
 
     var costs = [];
 
@@ -99,16 +101,16 @@ router.route('/')
 
         if (costs.length === 0) {
           console.log('No costs for this user');
-          res.status(404).json({
-            'message': 'no cost'
+          res.status(200).json({
+            'message': 'No expenses found with the selected criteria!'
           });
         } else {
           res.status(200).json(costs);
         }
       } else {
         console.log("User Not Found!");
-        res.status(404).json({
-          'message': 'user not found'
+        res.status(200).json({
+          'message': 'User not found with the selected criteria!'
         });
       }
     });
