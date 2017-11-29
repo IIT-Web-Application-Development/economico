@@ -9,41 +9,28 @@ router.get('/login', function(req, res, next) {
 });
 
 router.post('/login', function(req,res,next){
-
- /* var username = req.body.username;
-  var password = req.body.password;
-  console.log("username: " + username);
-  console.log("password: "  + password);
-
-  User.findOne({
-    '_id': username,
-    'pass': password
-  },function(err, usr){
-    if(err){
-      console.log("ERROR in finding user: " + err);
-      res.status(500).json({
-        'message': 'Internal Error in Finding User'
-      });
-    }else if(usr !== null){
-      console.log("The user exists");
-      res.status(200).send();
-    }else if(usr === null){
-      console.log("The user doesnt exist");
-      res.status(404).send();
-    }
-  });*/
-
-
-
   User.authenticate(req.body.username, req.body.password, function (error, user) {
       if (error || !user) {
         console.log("There is an error");
         res.status(401).send();
       } else {
         req.session.userId = user._id;
-        res.status(200).send({user._id});
+        res.status(200).send({"userId":user._id});
       }
     });
+});
+
+router.get('/logout', function(req, res, next) {
+  if (req.session) {
+    // delete session object
+    req.session.destroy(function(err) {
+      if(err) {
+        return next(err);
+      } else {
+        return res.redirect('/login');
+      }
+    });
+  }
 });
 
 /* GET register page. */
@@ -54,12 +41,13 @@ router.get('/register', function(req, res, next) {
 
 /* Get dashboard */
 router.get('/dashboard/:userId', function(req, res, next) {
-  console.log('Getting user dashboard');
-  var userId = req.params.userId;
-  var user = {};
-  User.find({
+   if (req.session && req.session.userId) {
+    console.log('Getting user dashboard');
+    var userId = req.params.userId;
+    var user = {};
+    User.find({
     '_id': userId
-  }, function(err, usr) {
+    } , function(err, usr) {
     if (err) {
       console.log("ERROR in finding user: " + err);
       res.status(500).json({
@@ -82,7 +70,13 @@ router.get('/dashboard/:userId', function(req, res, next) {
       });
     }
   });
+  } else {
+    res.redirect("/login?error");
+  }
 });
+
+//Require login for certain pages
+
 
 
 module.exports = router;
