@@ -118,11 +118,10 @@
       <!-- /.sidebar -->
     </aside>
 
-
     {{!-- JS DATA --}}
     <ul class="hidden categories-list">
       {{#each categories}}
-        <li id="{{this.name}}" data-color="{{this.color}}"></li>
+        <li id="{{this.name}}" data-color="{{this.color}}" data-total="{{this.total}}"></li>
       {{/each}}
     </ul>
     <ul class="hidden totals">
