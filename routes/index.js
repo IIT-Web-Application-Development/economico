@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
+var Handlebars = require('handlebars');
 
 /* GET login page. */
 router.get('/login', function(req, res, next) {
@@ -54,6 +55,41 @@ router.get('/register', function(req, res, next) {
 
 /* Get dashboard */
 router.get('/dashboard/:userId', function(req, res, next) {
+  //calculate categories totals
+  var categories = [{
+      name: "Education",
+      color: '#3c8dbc',
+      total: 0,
+      icon: 'ion-ios-book'
+    },
+    {
+      name: "Groceries",
+      color: '#f39c12',
+      total: 0,
+      icon: 'ion-bag'
+    },
+    {
+      name: "Clothing",
+      color: '#00a65a',
+      total: 0,
+      icon: 'ion-tshirt-outline'
+    },
+    {
+      name: "Bills",
+      color: '#dd4b39',
+      total: 0,
+      icon:'ion-ios-paper-outline'
+    },
+    {
+      name: "Travel",
+      color: '#00c0ef',
+      total: 0,
+      icon: 'ion-android-car'
+    }
+  ];
+
+
+
   console.log('Getting user dashboard');
   var userId = req.params.userId;
   var user = {};
@@ -70,10 +106,28 @@ router.get('/dashboard/:userId', function(req, res, next) {
       user.name = usr[0].name;
       user.pass = usr[0].pass;
       user.limit = usr[0].limit;
+      if (typeof usr[0].total === 'undefined') {
+        usr[0].total = 0;
+      }
+      user.total = (usr[0].total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
       user.email = usr[0].email;
       user.costs = usr[0].costs;
+
+      //calculate total for each category
+      user.costs.forEach(function(cost) {
+        var costCategory = cost.category;
+        //aadd amount to category total
+        categories.forEach(function(category) {
+          if (costCategory === category.name) {
+            category.total += cost.amount;
+          }
+        });
+      });
+      console.log(categories);
+
       res.render('index', {
-        user: user
+        user: user,
+        categories: categories
       });
     } else {
       console.log("User Not Found!");
