@@ -26,7 +26,7 @@
         statusCode: {
           200: function(response) {
             var currentHref = window.location.href;
-            window.location.href = currentHref.replace('login', 'dashboard/' + response.userId);
+            window.location.href = currentHref.replace('login', 'dashboard/' + response.userId).replace('?error','');
           },
           401: function(response) {
             $('p.result').detach();
