@@ -147,6 +147,8 @@
         success: function(result) {
           $('#' + expenseId).remove();
           $('#modal-trash-expense').modal('toggle');
+          console.log(result);
+          $('#total').html(result.total);
         }
       });
     });

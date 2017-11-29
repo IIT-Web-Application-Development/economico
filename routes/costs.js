@@ -141,7 +141,6 @@ router.route('/')
         usr[0].costs.push(cost);
         user.costs = usr[0].costs;
 
-
         total = parseFloat(usr[0].total) + parseFloat(cost.amount);
 
         User.update({
@@ -257,7 +256,7 @@ router.route('/:costid')
 
     User.findOne({
       '_id': userid
-    }, 'costs', function(err, result) {
+    }, 'costs total', function(err, result) {
       if (err) {
         console.log("ERROR: " + err);
         res.status(500).json({
@@ -277,11 +276,7 @@ router.route('/:costid')
             if (Object.keys(tempCost).length > 0) {
               costs.push(tempCost);
               updatedCost = tempCost;
-              if (result.total) {
-                total = result.total - cost.amount + parseFloat(updatedCost.amount);
-              } else {
-                total = parseFloat(updatedCost.amount);
-              }
+              total = result.total - cost.amount + parseFloat(updatedCost.amount);
             }
           } else {
             costs.push(cost);
@@ -305,7 +300,6 @@ router.route('/:costid')
                 'message': 'cost updated',
                 expense: updatedCost,
                 total: total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
-
               });
             }
           });
@@ -331,10 +325,11 @@ router.route('/:costid')
     var costid = parseInt(req.params.costid);
 
     var costs = [];
+    var total;
 
     User.findOne({
       '_id': userid
-    }, 'costs', function(err, result) {
+    }, 'costs total', function(err, result) {
       if (err) {
         console.log("ERROR: " + err);
         res.status(500).json({
@@ -344,6 +339,7 @@ router.route('/:costid')
         result.costs.forEach(function(cost) {
           if (cost._id === costid) {
             deleted = true;
+            total = parseFloat(result.total) - parseFloat(cost.amount);
           } else {
             costs.push(cost);
           }
@@ -353,6 +349,7 @@ router.route('/:costid')
             '_id': userid
           }, {
             'costs': costs,
+            'total': total
           }, function(err, doc) {
             if (err !== null) {
               console.log(err);
@@ -362,7 +359,8 @@ router.route('/:costid')
             } else {
               console.log("Cost Deleted");
               res.status(200).json({
-                'message': 'cost deleted'
+                'message': 'cost deleted',
+                total: total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
               });
             }
           });
