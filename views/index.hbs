@@ -124,9 +124,12 @@
         <li id="{{this.name}}" data-color="{{this.color}}" data-total="{{this.total}}"></li>
       {{/each}}
     </ul>
-    <ul class="hidden totals">
-      <li class="total"></li>
-    </ul>
+    {{!-- <ul class="hidden costs">
+      {{#each user.costs}}
+        <li class="cost" id="{{this._id}}" data-title="{{this.title}}" data-description="{{this.description}}" data-category="{{this.category}}" data-amount="{{this.amount}}" data-createdAt="{{this.createdAt}}">
+        </li>
+      {{/each}}
+    </ul> --}}
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
