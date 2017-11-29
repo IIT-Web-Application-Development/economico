@@ -22,6 +22,7 @@ router.route('/')
               user.name = r.name;
               user.email = r.email;
               user.limit = r.limit
+              user.total = r.total
               users.push(user);
           });
           res.status(200).json(users);
@@ -43,7 +44,8 @@ router.route('/')
   user._id = info.username;
   user.name = info.name;
   user.pass = info.password;
-  user.limit = info.limit;
+  user.limit = 2000;
+  user.total = 0;
   user.email = info.email;
   user.costs = [];
 
@@ -79,6 +81,7 @@ router.route('/:userid')
           user.name = usr[0].name;
           user.pass = usr[0].pass;
           user.limit = usr[0].limit;
+          user.total = usr[0].total;
           user.email = usr[0].email;
           user.costs = usr[0].costs;
           res.render('index', {
