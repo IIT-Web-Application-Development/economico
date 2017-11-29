@@ -22,8 +22,11 @@
     $('td.category .label').each(function() {
       var name = $(this).html();
       var color = $('.categories-list #' + name).attr('data-color');
-      $(this).addClass('label-' + color + '');
+      $(this).css({
+        'background-color': color
+      });
     });
+
 
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
@@ -113,15 +116,23 @@
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function(data, status) {
+          var total = data.total;
           data = data.expense;
           var createdAt = new Date(data.createdAt);
           var currentHref = window.location.href;
+
+          //get color
+          var name = data.category;
+          var color = $('.categories-list #' + name).attr('data-color');
+
           // wondow.location.href = currentHref.replace('register', 'login');
-          var $tableRow = '<tr id="' + data._id + '"><td>' +
-            data.title + '</td><td>' + data.description +
-            '</td><td><span class="label label-success">' + data.category +
-            '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td></tr>';
+          var $tableRow = '<tr id="' + data._id + '"><td class="title">' +
+            data.title + '</td><td class="description">' + data.description +
+            '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
+            '</span></td><td class="amount">$' +
+            data.amount + '</td>  <td>.' + createdAt + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-Doughnutpense" class="fa fa-edit Doughnutpense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
           $('#expenses-list tbody').prepend($tableRow);
+          $('#total').html(total);
           $('#modal-add-expense').modal('toggle');
         },
         error: function(error) {
@@ -145,14 +156,23 @@
         data: JSON.stringify(data),
         contentType: "application/json",
         success: function(data, status) {
-          data = data.expense;
           console.log(data);
+          var total = data.total;
+          data = data.expense;
+
           var currentHref = window.location.href;
-          var $tableRowHtml = '<td>' +
-            data.title + '</td><td>' + data.description +
-            '</td><td><span class="label label-success">' + data.category +
-            '</span></td><td>.' + data.createdAt + '</td><td><div class="tools"><i class="fa fa-edit"> </i><i class="fa fa-trash-o"></i></div></td>';
+          var createdAt = new Date(data.createdAt);
+          //get colour
+          var name = data.category;
+          var color = $('.categories-list #' + name).attr('data-color')
+
+          var $tableRowHtml = '<td class="title">' +
+            data.title + '</td><td class="description">' + data.description +
+            '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
+            '</span></td><td class="amount">$' + data.amount +
+            '</td><td class="createdAt">.' + createdAt + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td>';
           $('#' + data._id).html($tableRowHtml);
+          $('#total').html(total);
           $('#modal-edit-expense').modal('toggle');
         },
         error: function(error) {
