@@ -146,7 +146,7 @@
         type: 'DELETE',
         success: function(result) {
           $('#' + expenseId).remove();
-          $('#modal-hide-expense').modal('toggle');
+          $('#modal-trash-expense').modal('toggle');
         }
       });
     });
@@ -170,6 +170,7 @@
       $('#modal-edit-expense').find('select[name="category"]').val(category);
       $('#modal-edit-expense').find('input[name="amount"]').val(amount);
     });
+
     //Trash expense
     $(document).on('click', '.ask-trash-expense', function(e) {
       e.preventDefault();
