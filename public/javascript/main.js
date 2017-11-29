@@ -258,8 +258,8 @@
         //-------------
         //- BAR CHART -
         //-------------
-        var barChartCanvas = $('#barChart').get(0).getContext('2d')
-        var barChart = new Chart(barChartCanvas)
+        var barChartCanvas = $('#barChart').get(0).getContext('2d');
+        var barChart = new Chart(barChartCanvas);
         var barChartData = {
           labels: ['June', 'July', 'August', 'September', 'October', 'November', 'December'],
           datasets: [{
