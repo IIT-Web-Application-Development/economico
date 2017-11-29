@@ -27,6 +27,15 @@ $.noConflict();
   $(document).ready(function() {
     "use strict";
 
+    var locationRef = window.location.href;
+    var error = locationRef.split("?")[1];
+
+    console.log(error);
+
+    if(error){
+      $('.register').before('</br><p class="result">Login to access resources.</p>');
+    }
+
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
       console.log("TEST");
@@ -64,10 +73,13 @@ $.noConflict();
         contentType: "application/json",
         statusCode:{
           200: function(response){
-            window.location.href = currentHref.replace('login', 'login');
+            var currentHref = window.location.href;
+            window.location.href = currentHref.replace('login', 'dashboard/' + response.userId);
           },
           401: function(response){
-            console.log("Username or password wrong");
+            $('p.result').detach();
+            $('.register').before('</br><p class="result">Username/Password wrong.</p>');
+
           },
           500: function(response){
             console.log(response);
@@ -76,7 +88,7 @@ $.noConflict();
       });
     });
 
-
+    
     //-------------CRUD-----------------//
     //Add expense
     $('#add-expense-form').on('submit', function(e) {
