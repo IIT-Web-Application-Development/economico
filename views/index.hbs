@@ -20,6 +20,7 @@
                 <i class="fa fa-bell-o"></i>
                 <span class="label label-danger">1</span>
               </a>
+
               <ul class="dropdown-menu">
                 <li class="header">You have 1 notification</li>
                 <li>
@@ -33,6 +34,7 @@
                   </ul>
                 </li>
               </ul>
+
             </li>
 
             <!-- User Account: style can be found in dropdown.less -->
@@ -165,19 +167,46 @@
                   </li>
                 </ul>
               </div>
+              <div class="box-header">
+                <!-- form start -->
+                <form id="get-expenses-form" role="form" method="GET" action='../users/{{user._id}}/costs'>
+                  <!-- Date and time range -->
+                  <div class="form-group col-xs-3">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input type="text" name="from" class="form-control" id="from-date" placeholder="From">
+                    </div>
+                    <!-- /.input group -->
+                  </div>
+                  <div class="form-group col-xs-3">
+                    <div class="input-group">
+                      <div class="input-group-addon">
+                        <i class="fa fa-calendar"></i>
+                      </div>
+                      <input type="text" name="to" class="form-control" id="to-date" placeholder="To">
+                    </div>
+                    <!-- /.input group -->
+                  </div>
+                  <!-- select -->
+                  {{!-- {{#if categories}}
+                    <div class="form-group col-xs-3">
+                      <select name="category" class="form-control">
+                        <option value="">All categories</option>
+                        {{#each categories}}
+                        <option value="{{this.name}}">{{this.name}}</option>
+                        {{/each}}
+                      </select>
+                    </div>
+                  {{/if}} --}}
+                  <button type="submit" class="btn btn-primary pull-right">Filter</button>
+                </form>
+              </div>
               <!-- /.nav-tabs-custom -->
               <div class="tab-content">
                 <!-- Espenses - Default: List -->
                 <div class="chart tab-pane active" id="expenses-list" style="position: relative;">
-                  {{!-- <div class="box-header">
-                    <div class="input-group input-group-sm pull-right" style="width: 150px;">
-                      <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">
-                      <div class="input-group-btn">
-                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
-                      </div>
-                    </div>
-                  </div> --}}
-                  <!-- See dist/js/pages/dashboard.js to activate the todoList plugin -->
 
                   <div class="box-body table-responsive">
                     <table id="table-expenses" class="table table-hover dataTable" data-userId="{{user._id}}">
