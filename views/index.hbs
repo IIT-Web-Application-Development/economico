@@ -278,7 +278,7 @@
                               <label>Category</label>
                               <select name="category" class="form-control">
                               {{#each categories}}
-                              <option value="{{@index}}">{{@index}}</option>
+                              <option value="{{this.name}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                             </div>
@@ -332,7 +332,7 @@
                               <label>Category</label>
                               <select name="category" class="form-control">
                               {{#each categories}}
-                              <option value="{{@index}}">{{@index}}</option>
+                              <option value="{{this.name}}">{{this.name}}</option>
                               {{/each}}
                             </select>
                             </div>
