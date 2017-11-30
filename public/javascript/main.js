@@ -41,7 +41,6 @@
       });
     });
 
-
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
       console.log("TEST");
@@ -84,7 +83,7 @@
       var d = new Date();
       data.createdAt = d.toISOString();
       d = new Date(data.date);
-      date.date = d.toISOString();
+      data.date = d.toISOString();
       $.ajax({
         url: "/users/" + data.userid + "/costs/",
         type: "POST",
@@ -111,8 +110,15 @@
           $('#total').html('$' + total);
           $('#modal-add-expense').modal('toggle');
 
-          //UPDATE var categories[]
           //UPDATE var expenses[]
+          var newExpense = data
+          expenses.push(data);
+          categories.forEach(function(category) {
+            if (category.name === data.category) {
+              category.total = parseFloat(category.total) + parseFloat(data.amount);
+            }
+          });
+          updateCategoryBoxes(categories);
 
           //Since both categories and expenses contain now new data
           //Add js-generate class to chart tabs, so the charts will be regenerated
@@ -158,8 +164,26 @@
           $('#total').html('$' + total);
           $('#modal-edit-expense').modal('toggle');
 
-          //UPDATE var categories[]
           //UPDATE var expenses[]
+          expenses.forEach(function(expense, index, expenses) {
+            if (expense.id == data._id) {
+              //UPDATE var categories[]
+              categories.forEach(function(category) {
+                if (expense.category === category.name) {
+                  console.log('test');
+                  category.total = (parseFloat(category.total) - parseFloat(expense.amount)) + parseFloat(data.amount);
+                }
+              });
+              expense.title = data.title;
+              expense.description = data.description;
+              expense.date = data.date;
+              expense.amount = data.amount;
+              expense.category = data.category;
+              expense.createdAt = data.createdAt;
+            }
+          });
+
+          updateCategoryBoxes(categories);
 
           //Since both categories and expenses contain now new data
           //Add js-generate class to chart tabs, so the charts will be regenerated
@@ -183,10 +207,21 @@
           $('#' + expenseId).remove();
           $('#modal-trash-expense').modal('toggle');
           console.log(result);
-          $('#total').html(result.total);
+          $('#total').html('$' + result.total);
 
-          //UPDATE var categories[]
           //UPDATE var expenses[]
+          expenses.forEach(function(expense, index, expenses) {
+            if (expense.id === expenseId) {
+              //UPDATE var categories[]
+              categories.forEach(function(category) {
+                if (expense.category === category.name) {
+                  category.total -= expense.amount;
+                }
+              });
+              expenses.splice(index, 1);
+            }
+          });
+          updateCategoryBoxes(categories);
 
           //Since both categories and expenses contain now new data
           //Add js-generate class to chart tabs, so the charts will be regenerated
@@ -262,11 +297,16 @@
               expenses.push(expense);
             });
 
+            //Update categoryBoxes
+            updateCategoryBoxes(categories);
+
             //Since both categories and expenses contain now new data
             //Add js-generate class to chart tabs, so the charts will be regenerated
             $('.is-chart').addClass('js-generate');
             //Regenerate chart on expanded chart tab
-            $('.is-chart[aria-expanded="true"]')[0].click();
+            if ($('.is-chart[aria-expanded="true"]').length) {
+              $('.is-chart[aria-expanded="true"]')[0].click();
+            }
             $('#no-data-found').remove();
             $('#total').html('$' + total);
 
@@ -274,7 +314,6 @@
             var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
             $('#table-expenses tbody').html($tableRowHtml);
           }
-
 
         },
         error: function(error) {
@@ -521,6 +560,14 @@
   });
 
   //------------FUNCTIONS-----------------------//
+
+  function updateCategoryBoxes(categories) {
+    var $categoryBoxHtml = $('#categories-totals .small-box').html();
+    $('#categories-totals .small-box h3').html('$' + 0);
+    categories.forEach(function(category) {
+      $('#box-' + category.name + ' h3').html('$' + parseFloat(category.total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,"));
+    });
+  }
 
   function generateBarChartData(expenses, categories) {
 
