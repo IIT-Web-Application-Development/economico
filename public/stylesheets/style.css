@@ -20,3 +20,7 @@ a {
 .add-expense-modal .modal {
   background: transparent !important;
 }
+
+.dropdown.notifications-menu li p {
+  padding: 10px;
+}
