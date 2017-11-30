@@ -82,35 +82,35 @@ router.get('/dashboard/:userId', function(req, res, next) {
     var userId = req.params.userId;
     var user = {};
     User.find({
-      '_id': userId
-    }, function(err, usr) {
-      if (err) {
-        console.log("ERROR in finding user: " + err);
-        res.status(500).json({
-          'message': 'Internal Error in Finding User'
-        });
-      } else if (usr.length !== 0) {
-        user._id = usr[0]._id;
-        user.name = usr[0].name;
-        user.pass = usr[0].pass;
-        user.limit = usr[0].limit;
-        if (typeof usr[0].total === 'undefined') {
-          usr[0].total = 0;
-        }
-        user.total = (usr[0].total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-        user.email = usr[0].email;
-        user.costs = usr[0].costs;
-
-        //calculate total for each category
-        user.costs.forEach(function(cost) {
-          var costCategory = cost.category;
-          //aadd amount to category total
-          categories.forEach(function(category) {
-            if (costCategory === category.name) {
-              category.total += cost.amount;
-            }
+        '_id': userId
+      }, function(err, usr) {
+        if (err) {
+          console.log("ERROR in finding user: " + err);
+          res.status(500).json({
+            'message': 'Internal Error in Finding User'
           });
-        });
+        } else if (usr.length !== 0) {
+          user._id = usr[0]._id;
+          user.name = usr[0].name;
+          user.pass = usr[0].pass;
+          user.limit = usr[0].limit;
+          if (typeof usr[0].total === 'undefined') {
+            usr[0].total = 0;
+          }
+          user.total = (usr[0].total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+          user.email = usr[0].email;
+          user.costs = usr[0].costs;
+
+          //calculate total for each category
+          user.costs.forEach(function(cost) {
+              var costCategory = cost.category;
+              //aadd amount to category total
+              categories.forEach(function(category) {
+                  if (costCategory === category.name) {
+                    category.total = parseFloat(category.total + cost.amount).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+                }
+              });
+          });
 
         res.render('index', {
           user: user,
@@ -123,9 +123,9 @@ router.get('/dashboard/:userId', function(req, res, next) {
         });
       }
     });
-  } else {
-    res.redirect("/login?error");
-  }
+} else {
+  res.redirect("/login?error");
+}
 });
 
 /* Get serrings page */
