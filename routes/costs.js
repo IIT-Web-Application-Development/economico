@@ -38,15 +38,16 @@ router.route('/')
               tempCost.title = cost.title;
               tempCost.description = cost.description;
               tempCost.amount = cost.amount;
-              tempCost.createdAt = cost.createdAt;
               tempCost.category = cost.category;
+              tempCost.date = cost.date;
+              tempCost.createdAt = cost.createdAt;
               if (Object.keys(tempCost).length > 0) {
                 costs.push(tempCost);
               }
             });
           } else {
             result.costs.forEach(function(cost) {
-              var d = new Date(cost.createdAt);
+              var d = new Date(cost.date);
               var t = d.getTime();
               if (t >= beginDate && t <= endDate) {
                 var tempCost = {};
@@ -54,8 +55,9 @@ router.route('/')
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
-                tempCost.createdAt = cost.createdAt;
                 tempCost.category = cost.category;
+                tempCost.date = cost.date;
+                tempCost.createdAt = cost.createdAt;
                 if (Object.keys(tempCost).length > 0) {
                   costs.push(tempCost);
                 }
@@ -71,8 +73,9 @@ router.route('/')
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
-                tempCost.createdAt = cost.createdAt;
                 tempCost.category = cost.category;
+                tempCost.date = cost.date;
+                tempCost.createdAt = cost.createdAt;
                 if (Object.keys(tempCost).length > 0) {
                   costs.push(tempCost);
                 }
@@ -80,7 +83,7 @@ router.route('/')
             });
           } else {
             result.costs.forEach(function(cost) {
-              var d = new Date(cost.createdAt);
+              var d = new Date(cost.date);
               var t = d.getTime();
               if ((cost.title.includes(keyword) || cost.description.includes(keyword)) &&
                 (t >= beginDate && t <= endDate)) {
@@ -89,8 +92,9 @@ router.route('/')
                 tempCost.title = cost.title;
                 tempCost.description = cost.description;
                 tempCost.amount = cost.amount;
-                tempCost.createdAt = cost.createdAt;
                 tempCost.category = cost.category;
+                tempCost.date = cost.date;
+                tempCost.createdAt = cost.createdAt;
                 if (Object.keys(tempCost).length > 0) {
                   costs.push(tempCost);
                 }
@@ -133,12 +137,14 @@ router.route('/')
         });
       } else if (usr.length !== 0) {
         var info = req.body;
-        cost.amount = info.amount;
-        cost.createdAt = info.createdAt;
-        cost.category = info.category;
+        cost._id = generateID();
         cost.title = info.title;
         cost.description = info.description;
-        cost._id = generateID();
+        cost.amount = info.amount;
+        cost.category = info.category;
+        cost.date = info.date;
+        var d = new Date();
+        cost.createdAt = d.toISOString();
 
         usr[0].costs.push(cost);
         user.costs = usr[0].costs;
@@ -222,10 +228,11 @@ router.route('/:costid')
           if (cost._id === costid) {
             tempCost = {};
             tempCost._id = cost._id;
-            tempCost.amount = cost.amount;
             tempCost.title = cost.title;
             tempCost.description = cost.description;
+            tempCost.amount = cost.amount;
             tempCost.category = cost.category;
+            tempCost.date = cost.date;
             tempCost.createdAt = cost.createdAt;
           }
         });
@@ -273,7 +280,7 @@ router.route('/:costid')
             tempCost.title = info.title;
             tempCost.description = info.description;
             tempCost.amount = info.amount;
-            tempCost.createdAt = info.createdAt;
+            tempCost.date = info.date;
             tempCost.category = info.category;
             if (Object.keys(tempCost).length > 0) {
               costs.push(tempCost);
