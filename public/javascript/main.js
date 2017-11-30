@@ -94,6 +94,7 @@
           var total = data.total;
           data = data.expense;
           var createdAt = new Date(data.createdAt);
+          var date = new Date(data.date);
           var currentHref = window.location.href;
 
           //get color
@@ -105,7 +106,7 @@
             data.title + '</td><td class="description">' + data.description +
             '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
             '</span></td><td class="amount">$' +
-            data.amount + '</td>  <td>.' + createdAt + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-Doughnutpense" class="fa fa-edit Doughnutpense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
+            data.amount + '</td>  <td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-Doughnutpense" class="fa fa-edit Doughnutpense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
           $('#expenses-list tbody').prepend($tableRow);
           $('#total').html(total);
           $('#modal-add-expense').modal('toggle');
@@ -136,7 +137,7 @@
           data = data.expense;
 
           var currentHref = window.location.href;
-          var createdAt = new Date(data.createdAt);
+          var date = new Date(data.date);
           //get colour
           var name = data.category;
           var color = $('.categories-list #' + name).attr('data-color')
@@ -169,9 +170,140 @@
           $('#modal-trash-expense').modal('toggle');
           console.log(result);
           $('#total').html(result.total);
+
+          //UPDATE var categories[]
+          //UPDATE var expenses[]
+
+          //Since both categories and expenses contain now new data
+          //Add js-generate class to chart tabs, so the charts will be regenerated
+          $('.is-chart').addClass('js-generate');
         }
       });
     });
+
+    //Get expenses in expenses
+    $('#get-expenses-form').on('submit', function(e) {
+      e.preventDefault();
+      var data = objectifyForm($(this));
+      var from = new Date(data.from);
+      console.log(data.from);
+      data.from = from.getTime();
+      var to = new Date(data.to);
+      data.to = to.getTime();
+      var url = $(this).attr('action');
+
+      if (data.from && data.to) {
+        url += '?from=' + data.from + '&to=' + data.to;
+      } else if (data.from) {
+        url += '?from=' + data.from;
+      } else if (data.to) {
+        url += '?to=' + data.to;
+      }
+
+      $.ajax({
+        url: url,
+        type: "GET",
+        contentType: "application/json",
+        success: function(dataArray, status) {
+          if (dataArray.length > 0) {
+            //RESET categories totals
+            categories.forEach(function(category) {
+              category.total = 0;
+            });
+            //RESET expenses
+            expenses = [];
+            //RESET total
+            var total = 0;
+            //RESET table
+            $('#table-expenses tbody').html('');
+            dataArray.forEach(function(data) {
+              //Change date format
+              var date = new Date(data.date);
+              //get colour from ul categories color attribute
+              var color = $('.categories-list #' + data.category).attr('data-color')
+              total += parseFloat(data.amount);
+              //UPDATE table row
+              var $tableRowHtml = '<tr id="' + data._id + '"><td class="title">' +
+                data.title + '</td><td class="description">' + data.description +
+                '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
+                '</span></td><td class="amount">$' + data.amount +
+                '</td><td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
+              $('#table-expenses tbody').append($tableRowHtml);
+              //UPDATE var categories[] totals
+              categories.forEach(function(category) {
+                if (category.name == data.category) {
+                  category.total += data.amount;
+                }
+              });
+              //UPDATE var expenses[]
+              var expense = {
+                id: data._id,
+                title: data.title,
+                description: data.title,
+                category: data.category,
+                amount: data.amount,
+                date: data.date,
+                createdAt: data.createdAt,
+              }
+              expenses.push(expense);
+            });
+
+            //Since both categories and expenses contain now new data
+            //Add js-generate class to chart tabs, so the charts will be regenerated
+            $('.is-chart').addClass('js-generate');
+            //Regenerate chart on expanded chart tab
+            $('.is-chart[aria-expanded="true"]')[0].click();
+            $('#no-data-found').remove();
+            $('#total').html('$' + total);
+
+          } else {
+            var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
+            $('#table-expenses tbody').html($tableRowHtml);
+          }
+
+
+        },
+        error: function(error) {
+          console.log(error);
+          var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + error.message + '</td>';
+          $('#table-expenses tbody').html($tableRowHtml);
+        }
+      });
+    });
+
+    //-------------FILTER--------------------//
+    //Date range picker
+    $('#from-date').datepicker({
+      onSelect: function(date, inst) {
+        console.log(date);
+      },
+      selectWeek: true,
+      inline: true,
+      startDate: '01/01/2000',
+      maxDate: new Date(),
+      firstDay: 1
+    });
+    $('#to-date').datepicker({
+      onSelect: function(date, inst) {
+        console.log(date);
+      },
+      selectWeek: true,
+      inline: true,
+      startDate: '01/01/2000',
+      maxDate: new Date(),
+      firstDay: 1
+    });
+    $('.datepicker').datepicker({
+      onSelect: function(date, inst) {
+        console.log(date);
+      },
+      selectWeek: true,
+      inline: true,
+      startDate: '01/01/2000',
+      maxDate: new Date(),
+      firstDay: 1
+    });
+
 
 
     //--------------MODALS-------------------//
