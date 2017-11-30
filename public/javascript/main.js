@@ -20,12 +20,16 @@
 
     var expenses = [];
     $('#table-expenses tbody tr').each(function() {
+      var amount = $(this).find('.amount').html()
+      if (typeof amount != "undefined") {
+        amount = amount.replace('$', '');
+      }
       var expense = {
         id: $(this).attr('id'),
         title: $(this).find('.title').html(),
         description: $(this).find('.description').html(),
         category: $(this).find('.category span').html(),
-        amount: $(this).find('.amount').html().replace('$', ''),
+        amount: amount,
         date: $(this).find('.date').html(),
         createdAt: $(this).find('.createdAt').html()
       }
