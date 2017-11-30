@@ -178,7 +178,6 @@ router.route('/')
         });
       }
     });
-
   })
   .delete(function(req, res, next) {
     console.log('Deleting all costs for specific user');
