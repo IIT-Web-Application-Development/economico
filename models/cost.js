@@ -3,18 +3,19 @@ let Schema = mongoose.Schema;
 
 let CostSchema = new Schema({
   _id: Number,
-  amount: Number,
-  createdAt: Date,
-  category: String,
   title: String,
   description: String
+  amount: Number,
+  category: String,
+  date: Date,
+  createdAt: Date,
 });
 
-CostSchema.pre('save', function (next) {
+CostSchema.pre('save', function(next) {
   var cost = this;
   console.log('-------------cost------------------');
   console.log(cost);
-  bcrypt.hash(user.pass, 10, function (err, hash){
+  bcrypt.hash(user.pass, 10, function(err, hash) {
     if (err) {
       return next(err);
     }
