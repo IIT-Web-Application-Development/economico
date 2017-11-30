@@ -92,17 +92,12 @@
       <section class="sidebar">
         <!-- sidebar menu: : style can be found in sidebar.less -->
         <ul class="sidebar-menu" data-widget="tree">
-          <li>
-            <a href="#">
-          <i class="fa fa-calendar"></i> <span>Compare</span>
-        </a>
-          </li>
-          <li>
-            <a href="/settings/"><i class="fa fa-gears"></i> <span>Settings</span>
+          <li class="active ">
+            <a href="/dashboard/{{user._id}}"><i class="fa fa-home"></i> <span>Dashboard</span>
             </a>
           </li>
           <li>
-            <a href="{{user._id}}/trash/"><i class="fa fa-trash ask-trash-expense"></i> <span>Trash</span>
+            <a href="/settings/{{user._id}}"><i class="fa fa-gears"></i> <span>Settings</span>
             </a>
           </li>
         </ul>
