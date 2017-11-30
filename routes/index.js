@@ -77,8 +77,6 @@ router.get('/dashboard/:userId', function(req, res, next) {
     }
   ];
 
-
-
   if (req.session && req.session.userId) {
     console.log('Getting user dashboard');
     var userId = req.params.userId;
@@ -113,7 +111,7 @@ router.get('/dashboard/:userId', function(req, res, next) {
             }
           });
         });
-
+        
         res.render('index', {
           user: user,
           categories: categories
