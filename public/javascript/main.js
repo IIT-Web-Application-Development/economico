@@ -356,17 +356,24 @@
     //--------------CHARTS------------------//
     $('.is-chart').on('click', function() {
       var href = $(this).attr('href');
-      generateChart(href);
+      if ($(this).hasClass('js-generate')) {
+        generateChart(href, categories, expenses);
+        $(this).removeClass('js-generate');
+      }
     });
 
-    function generateChart(href) {
+    function generateChart(href, categories, expenses) {
       $(href).addClass('active');
-      if (href == "#expenses-doughnut-chart" && !$(href).hasClass('generated')) {
-        $(href).addClass('generated');
+
+      if (href == "#expenses-doughnut-chart") {
         //-------------
         //- PIE CHART -
         //-------------
-        // Get context with jQuery - using jQuery's .get() method.
+
+        //Reset canvas
+        $('#doughnut-results-graph').remove();
+        $('#expenses-doughnut-chart .box-body').append('<canvas id="doughnutChart"><canvas>');
+
         var doughnutChartCanvas = $('#doughnutChart').get(0).getContext('2d');
         var doughnutChart = new Chart(doughnutChartCanvas);
         var DoughnutData = [
@@ -379,8 +386,6 @@
         ];
 
         categories.forEach(function(category) {
-          console.log('category');
-          console.log(category);
           var dataItem = {
             value: category.total,
             color: category.color,
@@ -421,37 +426,42 @@
         doughnutChart.Doughnut(DoughnutData, doughnutOptions);
         // $('#doughnutLegend').html(doughnutChart.generateLegend());
 
-      } else if (href == "#expenses-bar-chart" && !$(href).hasClass('generated')) {
-        $(href).addClass('generated');
+      } else if (href == "#expenses-bar-chart") {
         //-------------
         //- BAR CHART -
         //-------------
+        //Reset canvas
+        $('#bar-results-graph').remove();
+        $('#expenses-bar-chart .box-body').append('<canvas id="barChart"><canvas>');
+
         var barChartCanvas = $('#barChart').get(0).getContext('2d');
         var barChart = new Chart(barChartCanvas);
-        var barChartData = {
-          labels: ['June', 'July', 'August', 'September', 'October', 'November', 'December'],
-          datasets: [{
-              label: 'Education',
-              fillColor: 'rgba(210, 214, 222, 1)',
-              strokeColor: 'rgba(210, 214, 222, 1)',
-              pointColor: 'rgba(210, 214, 222, 1)',
-              pointStrokeColor: '#c1c7d1',
-              pointHighlightFill: '#fff',
-              pointHighlightStroke: 'rgba(220,220,220,1)',
-              data: [65, 59, 80, 81, 56, 55, 40]
-            },
-            {
-              label: 'Groceries',
-              fillColor: 'rgba(60,141,188,0.9)',
-              strokeColor: 'rgba(60,141,188,0.8)',
-              pointColor: '#3b8bba',
-              pointStrokeColor: 'rgba(60,141,188,1)',
-              pointHighlightFill: '#fff',
-              pointHighlightStroke: 'rgba(60,141,188,1)',
-              data: [28, 48, 40, 19, 86, 27, 90]
-            }
-          ]
-        }
+        // var barChartData = {
+        //   labels: ['June', 'July', 'August', 'September', 'October', 'November', 'December'],
+        //   datasets: [{
+        //       label: 'Education',
+        //       fillColor: 'rgba(210, 214, 222, 1)',
+        //       strokeColor: 'rgba(210, 214, 222, 1)',
+        //       pointColor: 'rgba(210, 214, 222, 1)',
+        //       pointStrokeColor: '#c1c7d1',
+        //       pointHighlightFill: '#fff',
+        //       pointHighlightStroke: 'rgba(220,220,220,1)',
+        //       data: [65, 59, 80, 81, 56, 55, 40]
+        //     },
+        //     {
+        //       label: 'Groceries',
+        //       fillColor: 'rgba(60,141,188,0.9)',
+        //       strokeColor: 'rgba(60,141,188,0.8)',
+        //       pointColor: '#3b8bba',
+        //       pointStrokeColor: 'rgba(60,141,188,1)',
+        //       pointHighlightFill: '#fff',
+        //       pointHighlightStroke: 'rgba(60,141,188,1)',
+        //       data: [28, 48, 40, 19, 86, 27, 90]
+        //     }
+        //   ]
+        // }
+
+        var barChartData = generateBarChartData(expenses, categories);
 
         var barChartOptions = {
           //Boolean - Whether the scale should start at zero, or an order of magnitude down from the lowest value
@@ -481,10 +491,6 @@
           maintainAspectRatio: true
         }
 
-        barChartData.datasets[1].fillColor = '#00a65a'
-        barChartData.datasets[1].strokeColor = '#00a65a'
-        barChartData.datasets[1].pointColor = '#00a65a'
-        barChartOptions.datasetFill = false
         barChart.Bar(barChartData, barChartOptions)
       }
     }
@@ -515,6 +521,41 @@
   });
 
   //------------FUNCTIONS-----------------------//
+
+  function generateBarChartData(expenses, categories) {
+
+    var barChartData = {
+      labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+      datasets: []
+    }
+
+    categories.forEach(function(category, index) {
+      var dataset = {
+        label: category.name,
+        fillColor: category.color,
+        strokeColor: category.color,
+        pointColor: category.color,
+        pointStrokeColor: category.color,
+        pointHighlightFill: '#fff',
+        pointHighlightStroke: category.color,
+        data: []
+      };
+      barChartData.labels.forEach(function(label, labelIndex, labels) {
+        expenses.forEach(function(expense) {
+          var month = new Date(expense.date).getMonth();
+          dataset.data[labelIndex] = 0;
+          if ((expense.category === category.name)) {
+            console.log(category.name);
+
+            dataset.data[month] += parseFloat(expense.amount);
+          }
+        });
+      });
+      barChartData.datasets.push(dataset);
+    });
+
+    return barChartData;
+  }
 
   //serialize data function
   function objectifyForm($form) {
