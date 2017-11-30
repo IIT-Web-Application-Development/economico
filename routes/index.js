@@ -111,7 +111,7 @@ router.get('/dashboard/:userId', function(req, res, next) {
             }
           });
         });
-        
+
         res.render('index', {
           user: user,
           categories: categories
@@ -128,7 +128,48 @@ router.get('/dashboard/:userId', function(req, res, next) {
   }
 });
 
-//Require login for certain pages
+/* Get serrings page */
+/* GET register page. */
+router.get('/settings/:userId', function(req, res, next) {
+  console.log('Settings page');
+  if (req.session && req.session.userId) {
+    console.log('Getting user settings');
+    var userId = req.params.userId;
+    var user = {};
+    User.find({
+      '_id': userId
+    }, function(err, usr) {
+      if (err) {
+        console.log("ERROR in finding user: " + err);
+        res.status(500).json({
+          'message': 'Internal Error in Finding User'
+        });
+      } else if (usr.length !== 0) {
+        user._id = usr[0]._id;
+        user.name = usr[0].name;
+        user.pass = usr[0].pass;
+        user.limit = usr[0].limit;
+        if (typeof usr[0].total === 'undefined') {
+          usr[0].total = 0;
+        }
+        user.total = (usr[0].total).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+        user.email = usr[0].email;
+        user.costs = usr[0].costs;
+
+        res.render('settings', {
+          user: user
+        });
+      } else {
+        console.log("User Not Found!");
+        res.status(404).json({
+          "message": 'User Not Found'
+        });
+      }
+    });
+  } else {
+    res.redirect("/login?error");
+  }
+});
 
 
 

@@ -45,7 +45,9 @@
                   {{else}}
                     <img src="/img/user.png" class="user-image" alt="User Image"/>
                 {{/if}}
-                <span class="hidden-xs">{{user.name}}</span>
+
+                <span class="hidden-xs">
+                  {{#if user.name}}{{user.name}}{{else}}{{user._id}}{{/if}}</span>
               </a>
               <ul class="dropdown-menu">
                 <!-- User image -->
@@ -96,7 +98,7 @@
         </a>
           </li>
           <li>
-            <a href="#"><i class="fa fa-gears"></i> <span>Settings</span>
+            <a href="/settings/"><i class="fa fa-gears"></i> <span>Settings</span>
             </a>
           </li>
           <li>
@@ -125,8 +127,7 @@
         </small>
       </h1>
         <ol class="breadcrumb">
-          <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
-          <li class="active">Dashboard</li>
+          <li><a href="#"><i class="fa fa-dashboard"></i> Home </a></li>
         </ol>
       </section>
 
