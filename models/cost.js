@@ -4,7 +4,7 @@ let Schema = mongoose.Schema;
 let CostSchema = new Schema({
   _id: Number,
   title: String,
-  description: String
+  description: String,
   amount: Number,
   category: String,
   date: Date,
