@@ -132,17 +132,6 @@
           <!-- Left col -->
           <section class="col-lg-9 connectedSortable">
             <div class="box box-primary">
-              <!-- Custom tabs (Charts with tabs)-->
-              <div class="nav-tabs-custom">
-                <!-- Tabs within a box -->
-                <ul class="nav nav-tabs pull-right">
-                  <li class="active"><a href="#expenses-list" data-toggle="tab">List</a></li>
-                  <li><a href="#expenses-doughnut-chart" class="is-chart js-generate" data-toggle="tab">Doughnut</a></li>
-                  <li><a href="#expenses-bar-chart" class="is-chart js-generate" data-toggle="tab">Bars</a></li>
-                  <li class="pull-left header"><i class="fa fa-inbox"></i>
-                  </li>
-                </ul>
-              </div>
               <div class="box-body">
                 <!-- form start -->
                 <form id="settings-form" role="form" method="PUT" action=''>
@@ -159,14 +148,6 @@
                     <input type="email" name="email" class="form-control" placeholder="i.e. anna@domain.com">
                   </div>
                   <div class="form-group col-lg-6 col-xs-12">
-                    <label>Password</label>
-                    <input type="password" name="password" class="form-control" placeholder="">
-                  </div>
-                  <div class="form-group col-lg-6 col-xs-12">
-                    <label>Retype password</label>
-                    <input type="password" name="retype-password" class="form-control" placeholder="">
-                  </div>
-                  <div class="form-group col-lg-6 col-xs-12">
                     <label>Limit</label>
                     <input type="text" name="limit" class="form-control" placeholder="i.e. $2000">
                   </div>
@@ -174,11 +155,53 @@
                     <button type="submit" class="btn btn-primary">Submit</button>
                   </div>
                 </form>
+                <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-change-password">Change password</button>
               </div>
               <!-- /.box-body -->
             </div>
           </section>
           <!-- /.Left col -->
+          <!-- MODAL ADD EXPENSE-->
+          <div class="modal fade" id="modal-change-password">
+            <div class="modal-dialog">
+              <div class="box box-primary">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">{{user.username}}</h4>
+                  </div>
+                  <!-- form start -->
+                  <form id="add-expense-form" role="form" method="post" action="/costs/">
+                    <div class="modal-body">
+                      <input required type="hidden" name="userid" value="{{user._id}}" />
+                      <div class="form-group">
+                        <label for="input-title">Old password</label>
+                        <input required type="password" class="form-control" name="old-password" />
+                      </div>
+                      <div class="form-group">
+                        <label for="input-title">New password</label>
+                        <input required type="password" class="form-control" name="new-password" />
+                      </div>
+                      <div class="form-group">
+                        <label for="email">Retype password</label>
+                        <input required type="password" class="form-control" name="retype-password" />
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    </div>
+                  </form>
+
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.box -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
 
         </div>
         <!-- /.row (main row) -->
