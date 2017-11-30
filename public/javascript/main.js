@@ -70,6 +70,9 @@
           },
           error: function(error) {
             console.log(error);
+            if (error.responseJSON.exists) {
+              $('.login-btn').before('</br><p class="result">Username already exists. Choose another username.</p>');
+            }
           }
         });
       } else {
