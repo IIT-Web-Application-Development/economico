@@ -126,12 +126,6 @@
         <li id="{{this.name}}" data-color="{{this.color}}" data-total="{{this.total}}"></li>
       {{/each}}
     </ul>
-    {{!-- <ul class="hidden costs">
-      {{#each user.costs}}
-        <li class="cost" id="{{this._id}}" data-title="{{this.title}}" data-description="{{this.description}}" data-category="{{this.category}}" data-amount="{{this.amount}}" data-createdAt="{{this.createdAt}}">
-        </li>
-      {{/each}}
-    </ul> --}}
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -227,7 +221,7 @@
                             <td class="description">{{this.description}}</td>
                             <td class="category"><span class="label">{{this.category}}</span></td>
                             <td class="amount">${{this.amount}}</td>
-                            <td class="createdAt">{{this.createdAt}}</td>
+                            <td class="date">{{this.date}}</td>
                             <td class="tools">
                               <a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>
                               <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a>
@@ -288,28 +282,37 @@
                       <!-- form start -->
                       <form id="add-expense-form" role="form" method="post" action="/costs/">
                         <div class="modal-body">
-                          <input required type="hidden" name="userid" value="{{user._id}}">
+                          <input required type="hidden" name="userid" value="{{user._id}}" />
                           <div class="form-group">
                             <label for="input-title">Title</label>
-                            <input required type="text" class="form-control" name="title" placeholder="i.e. War and Peace book - Amazon">
+                            <input required type="text" class="form-control" name="title" placeholder="i.e. War and Peace book - Amazon" />
                           </div>
                           <div class="form-group">
                             <label for="input-title">Amount</label>
-                            <input required type="text" class="form-control" name="amount" placeholder="i.e. 20">
+                            <input required type="text" class="form-control" name="amount" placeholder="i.e. 20" />
                           </div>
                           <div class="form-group">
                             <label for="email">Description</label>
-                            <textaera class="form-control" name="description" placeholder="i.e. Hardcopy version.">
+                            <textarea class="form-control" name="description" placeholder="i.e. Hardcopy version."></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label for="email">Date</label>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
+                            </div>
                           </div>
                           <!-- select -->
                           {{#if categories}}
                             <div class="form-group">
                               <label>Category</label>
                               <select name="category" class="form-control">
-                              {{#each categories}}
-                              <option value="{{this.name}}">{{this.name}}</option>
-                              {{/each}}
-                            </select>
+                                {{#each categories}}
+                                  <option value="{{this.name}}">{{this.name}}</option>
+                                {{/each}}
+                              </select>
                             </div>
                           {{/if}}
                         </div>
@@ -353,7 +356,16 @@
                           </div>
                           <div class="form-group">
                             <label for="email">Description</label>
-                            <textaera class="form-control" name="description" placeholder="i.e. Hardcopy version.">
+                            <textarea class="form-control" name="description" placeholder="i.e. Hardcopy version."></textarea>
+                          </div>
+                          <div class="form-group">
+                            <label for="date">Date</label>
+                            <div class="input-group">
+                              <div class="input-group-addon">
+                                <i class="fa fa-calendar"></i>
+                              </div>
+                              <input type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
+                            </div>
                           </div>
                           <!-- select -->
                           {{#if categories}}
