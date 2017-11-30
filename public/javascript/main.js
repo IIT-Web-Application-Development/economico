@@ -18,6 +18,20 @@
       categories.push(category);
     });
 
+    var expenses = [];
+    $('#table-expenses tbody tr').each(function() {
+      var expense = {
+        id: $(this).attr('id'),
+        title: $(this).find('.title').html(),
+        description: $(this).find('.description').html(),
+        category: $(this).find('.category span').html(),
+        amount: $(this).find('.amount').html().replace('$', ''),
+        date: $(this).find('.date').html(),
+        createdAt: $(this).find('.createdAt').html()
+      }
+      expenses.push(expense);
+    });
+
     //Assign categories color class
     $('td.category .label').each(function() {
       var name = $(this).html();
@@ -68,8 +82,9 @@
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
       var d = new Date();
-      var n = d.toISOString();
-      data.createdAt = n;
+      data.createdAt = d.toISOString();
+      d = new Date(data.date);
+      date.date = d.toISOString();
       $.ajax({
         url: "/users/" + data.userid + "/costs/",
         type: "POST",
