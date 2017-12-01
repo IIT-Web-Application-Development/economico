@@ -38,6 +38,10 @@
       }
       expenses.push(expense);
     });
+    console.log(expenses);
+    if (expenses.length > 0) {
+      $('.is-chart').removeClass('disable');
+    }
 
     //Assign categories color class
     $('td.category .label').each(function() {
@@ -120,8 +124,10 @@
           $('#total').html('$' + total);
           $('#modal-add-expense').modal('toggle');
 
+          $('.is-chart').removeClass('disable');
+
           //UPDATE var expenses[]
-          var newExpense = data
+          var newExpense = data;
           expenses.push(data);
           categories.forEach(function(category) {
             if (category.name === data.category) {
@@ -230,6 +236,10 @@
               expenses.splice(index, 1);
             }
           });
+          if (expenses.length == 0) {
+            $('.is-chart').addClass('disable');
+          }
+
           updateCategoryBoxes(categories);
 
           //Since both categories and expenses contain now new data
@@ -248,20 +258,15 @@
           $('#modal-trash-all-expenses').modal('toggle');
           console.log(result);
           $('#total').html('$' + result.total);
-          var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
+          var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + result.message + '</td>';
           $('#table-expenses tbody').html($tableRowHtml);
 
           //UPDATE var expenses[]
-          expenses.forEach(function(expense, index, expenses) {
-            if (expense.id === expenseId) {
-              //UPDATE var categories[]
-              categories.forEach(function(category) {
-                if (expense.category === category.name) {
-                  category.total -= expense.amount;
-                }
-              });
-              expenses.splice(index, 1);
-            }
+          expenses = [];
+          $('.is-chart').addClass('disable');
+          //UPDATE var categories[]
+          categories.forEach(function(category) {
+            category.total = 0;
           });
           updateCategoryBoxes(categories);
 
@@ -580,7 +585,7 @@
           maintainAspectRatio: true
         }
 
-        barChart.Bar(barChartData, barChartOptions)
+        barChart.Bar(barChartData, barChartOptions);
       }
     }
 
