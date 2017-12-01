@@ -237,6 +237,39 @@
         }
       });
     });
+    //Delete all expensea
+    $(document).on('click', '.trash-all-expenses', function(e) {
+      e.preventDefault();
+      $.ajax({
+        url: '/users/' + userId + '/costs/',
+        type: 'DELETE',
+        success: function(result) {
+          $('#modal-trash-all-expenses').modal('toggle');
+          console.log(result);
+          $('#total').html('$' + result.total);
+          var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
+          $('#table-expenses tbody').html($tableRowHtml);
+
+          //UPDATE var expenses[]
+          expenses.forEach(function(expense, index, expenses) {
+            if (expense.id === expenseId) {
+              //UPDATE var categories[]
+              categories.forEach(function(category) {
+                if (expense.category === category.name) {
+                  category.total -= expense.amount;
+                }
+              });
+              expenses.splice(index, 1);
+            }
+          });
+          updateCategoryBoxes(categories);
+
+          //Since both categories and expenses contain now new data
+          //Add js-generate class to chart tabs, so the charts will be regenerated
+          $('.is-chart').addClass('js-generate');
+        }
+      });
+    });
 
     //Get expenses in expenses
     $('#get-expenses-form').on('submit', function(e) {
@@ -397,6 +430,16 @@
       });
     });
 
+    //Trash all expenses
+    $(document).on('click', '.ask-trash-all-expenses', function(e) {
+      e.preventDefault();
+      var expenseId = $(this).closest('tr').attr('id');
+      var userId = $(this).closest('table').attr('data-userId');
+      var title = $(this).closest('tr').find('.title').html();
+      $('#modal-trash-all-expenses').attr({
+        'data-userid': userId
+      });
+    });
 
     //--------------CHARTS------------------//
     $('.is-chart').on('click', function() {

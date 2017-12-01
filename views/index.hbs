@@ -239,10 +239,13 @@
               </div>
               <!-- /.box-body -->
               <div class="box-footer clearfix no-border">
+                <button type="button" class="btn btn-default pull-left ask-trash-all-expenses" data-toggle="modal" data-target="#modal-trash-all-expenses">
+                  <i class="fa fa-trash"></i> Delete all
+                </button>
                 <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-add-expense">
-              <i class="fa fa-plus"></i>
-              Add item
-            </button>
+                  <i class="fa fa-plus"></i>
+                  Add item
+                </button>
               </div>
               <!-- MODAL ADD EXPENSE-->
               <div class="modal fade" id="modal-add-expense">
@@ -383,6 +386,33 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-primary trash-expense pull-left">Delete</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                      </div>
+
+                    </div>
+                    <!-- /.modal-content -->
+                  </div>
+                  <!-- /.box -->
+                </div>
+                <!-- /.modal-dialog -->
+              </div>
+              <!-- MODAL DELETE EXPENSE-->
+              <div class="modal fade" id="modal-trash-all-expenses">
+                <div class="modal-dialog">
+                  <div class="box box-primary">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Delete all expense</h4>
+                      </div>
+                      <div class="modal-body">
+                        <p>
+                          Are you sure you want to delete all expenses?
+                        </p>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-primary trash-all-expenses pull-left">Delete</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                       </div>
 
