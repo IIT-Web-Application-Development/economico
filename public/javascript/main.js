@@ -360,6 +360,7 @@
           } else {
             var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
             $('#table-expenses tbody').html($tableRowHtml);
+            $('.is-chart').addClass('disable');
           }
 
         },
@@ -367,6 +368,7 @@
           console.log(error);
           var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + error.message + '</td>';
           $('#table-expenses tbody').html($tableRowHtml);
+          $('.is-chart').addClass('disable');
         }
       });
     });
@@ -465,7 +467,7 @@
         //-------------
 
         //Reset canvas
-        $('#doughnut-results-graph').remove();
+        $('#doughnutChart').remove();
         $('#expenses-doughnut-chart .box-body').append('<canvas id="doughnutChart"><canvas>');
 
         var doughnutChartCanvas = $('#doughnutChart').get(0).getContext('2d');
@@ -525,7 +527,7 @@
         //- BAR CHART -
         //-------------
         //Reset canvas
-        $('#bar-results-graph').remove();
+        $('#barChart').remove();
         $('#expenses-bar-chart .box-body').append('<canvas id="barChart"><canvas>');
 
         var barChartCanvas = $('#barChart').get(0).getContext('2d');
@@ -626,6 +628,8 @@
 
   function generateBarChartData(expenses, categories) {
 
+    var selectedYear = '2017';
+
     var barChartData = {
       labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
       datasets: []
@@ -644,11 +648,12 @@
       };
       barChartData.labels.forEach(function(label, labelIndex, labels) {
         expenses.forEach(function(expense) {
-          var month = new Date(expense.date).getMonth();
+          var expenseDate = new Date(expense.date);
+          var month = expenseDate.getMonth();
+          var year = expenseDate.getFullYear();
           dataset.data[labelIndex] = 0;
-          if ((expense.category === category.name)) {
+          if ((expense.category === category.name) && year == selectedYear) {
             console.log(category.name);
-
             dataset.data[month] += parseFloat(expense.amount);
           }
         });
