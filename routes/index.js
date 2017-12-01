@@ -2,6 +2,18 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
+
+/* Redirect based on session */
+router.get("/", function(req,res,next){
+  if(req.session && req.session.userId){
+    res.redirect("/dashboard/" + req.session.userId);
+  }else{
+    res.redirect("/login");
+  }
+});
+
+
+
 /* GET login page. */
 router.get('/login', function(req, res, next) {
   console.log('Login page');
