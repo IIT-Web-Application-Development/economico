@@ -65,6 +65,8 @@
       });
     });
 
+
+    //--------------EDIT USER PASSWORD---------------//
     $('#edit-password-form').on('submit', function(e) {
       console.log("TEST");
       e.preventDefault();
@@ -88,6 +90,26 @@
         }
       });
     });
+
+
+    //--------------DELETE USER---------------//
+    $('.btn-delete').click(function(){
+      $.ajax({
+        url: "/users/" + $("#userId").val(),
+        type: "DELETE",
+        contentType: "application/json",
+        statusCode: {
+          200: function(response){
+            // $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
+            var currentHref = window.location.href;
+            window.location.href = currentHref.replace('settings/' + $("#userId").val(), 'login');
+          
+          }
+        }
+      });
+    });
+
+
 
   });
 

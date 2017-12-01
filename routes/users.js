@@ -117,11 +117,11 @@ router.route('/:userid')
   }
 })
 .delete(function(req, res, next){
-
   if (req.session && req.session.userId){
     console.log('Deleting All Users');
     var userid = req.params.userid;
 
+    req.session.destroy();
     User.remove({'_id': userid}, function(err, done){
         if(err !== null){
             console.log(err);
@@ -131,7 +131,8 @@ router.route('/:userid')
             res.status(200).json({'message': 'user not found'});
         } else{
             console.log("User Deleted Successfully");
-            res.status(200).json({'message': 'user deleted successfully'});
+            res.status(200).send();
+            //Destroy session after deleting self, redirect login
         }
     });
   }else{
