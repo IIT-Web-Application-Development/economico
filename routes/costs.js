@@ -150,6 +150,7 @@ router.route('/')
         user.costs = usr[0].costs;
 
         total = parseFloat(usr[0].total) + parseFloat(cost.amount);
+        total = total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
         User.update({
           '_id': userid
@@ -167,7 +168,7 @@ router.route('/')
             res.status(200).json({
               'message': 'ok',
               expense: cost,
-              total: total.toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")
+              total: total
             });
           }
         });
@@ -186,7 +187,8 @@ router.route('/')
     User.update({
       '_id': userid
     }, {
-      'costs': []
+      'costs': [],
+      'total': 0
     }, function(err, done) {
       if (err) {
         console.log("ERROR: " + err);
@@ -201,7 +203,8 @@ router.route('/')
       } else {
         console.log("All Costs Deleted Successfully");
         res.status(200).json({
-          'message': 'all cost deleted'
+          'message': 'All expenses deleted!',
+          'total': 0
         });
       }
     });
