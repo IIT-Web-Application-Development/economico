@@ -612,18 +612,20 @@
         pointHighlightStroke: category.color,
         data: []
       };
+
       barChartData.labels.forEach(function(label, labelIndex, labels) {
-        expenses.forEach(function(expense) {
-          var expenseDate = new Date(expense.date);
-          var month = expenseDate.getMonth();
-          var year = expenseDate.getFullYear();
-          dataset.data[labelIndex] = 0;
-          if ((expense.category === category.name) && year == selectedYear) {
-            console.log(category.name);
-            dataset.data[month] += parseFloat(expense.amount);
-          }
-        });
+        dataset.data[labelIndex] = 0;
       });
+      expenses.forEach(function(expense) {
+        var expenseDate = new Date(expense.date);
+        var month = expenseDate.getMonth();
+        var year = expenseDate.getFullYear();
+        if ((expense.category === category.name) && year == selectedYear) {
+          console.log(expense.category);
+          dataset.data[month] += parseFloat(expense.amount);
+        }
+      });
+
       barChartData.datasets.push(dataset);
     });
 
