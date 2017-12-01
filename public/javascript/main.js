@@ -21,13 +21,14 @@
     });
 
     var expenses = [];
-    $('#table-expenses tbody tr').each(function() {
+    $('.is-chart').addClass('disable');
+    $('#table-expenses tbody tr:not(#no-data-found)').each(function() {
       var amount = $(this).find('.amount').html()
       if (typeof amount != "undefined") {
         amount = amount.replace('$', '');
       }
       var expense = {
-        id: $(this).attr('id'),
+        _id: $(this).attr('id'),
         title: $(this).find('.title').html(),
         description: $(this).find('.description').html(),
         category: $(this).find('.category span').html(),
@@ -175,7 +176,7 @@
 
           //UPDATE var expenses[]
           expenses.forEach(function(expense, index, expenses) {
-            if (expense.id == data._id) {
+            if (expense._id == data._id) {
               //UPDATE var categories[]
               categories.forEach(function(category) {
                 if (expense.category === category.name) {
@@ -219,7 +220,7 @@
 
           //UPDATE var expenses[]
           expenses.forEach(function(expense, index, expenses) {
-            if (expense.id === expenseId) {
+            if (expense._id === expenseId) {
               //UPDATE var categories[]
               categories.forEach(function(category) {
                 if (expense.category === category.name) {
@@ -327,7 +328,7 @@
               });
               //UPDATE var expenses[]
               var expense = {
-                id: data._id,
+                _id: data._id,
                 title: data.title,
                 description: data.title,
                 category: data.category,
