@@ -24,3 +24,8 @@ a {
 .dropdown.notifications-menu li p {
   padding: 10px;
 }
+
+.disable{
+  opacity:0.5;
+  pointer-events: none;
+}
