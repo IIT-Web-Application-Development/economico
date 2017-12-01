@@ -239,11 +239,10 @@ router.get('/settings/:userId', function(req, res, next) {
 router.put('/settings/:userId', function(req, res, next) {
   if (req.session && req.session.userId) {
   var userId = req.params.userId;
-
-  console.log("************************************** User Id:" + userId);
-
   var name = req.body.name;
   var email = req.body.email;
+
+  //Limit needs to be fixed, doesn't properly work
   var limit = parseFloat(req.body.limit).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
 
   User.update({ _id: userId }, 
@@ -255,36 +254,36 @@ router.put('/settings/:userId', function(req, res, next) {
         res.status(204).send();
       }
     });
-
-
-
-    /*console.log('Getting user settings');
-    var userId = req.params.userId;
-    var user = {};
-    User.findOne({_id : userId}, function (err, user) {
-        if(err){
-          res.status(500).send({"error":"Internal error"});
-        }else if(!user){
-          res.status(404).send({"notFound": "User not found"});
-        }else{
-          user.name = req.body.name;
-          user.email = req.body.email;
-          user.limit = Number.parseFloat(req.body.limit);
-          user.save(function (err, response){
-            if (err) {
-                console.log("could not update user");
-                console.log(err);
-                res.status(500).send({"error":"Internal error"});
-            } else {
-              req.session.userId = user._id;
-              res.status(204).send();
-            }
-          }); 
-        }
-      });*/
-
   } else {
     res.redirect("/login?error");
+  }
+});
+
+
+router.put("/settings/:userId/changePassword", function(req,res, next){
+  if(req.session && req.session.userId){
+
+    var userId = req.params.userId;
+    var oldPassword = req.body.oldPassword;
+    var newPassword = req.body.newPassword;
+
+    console.log("UserId:" + userId + " oldPassword:" + oldPassword + " newPassword: " + newPassword);
+
+    User.authenticate(userId,oldPassword, function(error, user) {
+      if (error || !user) {
+        console.log(error);
+        res.status(401).send(error);
+      } else {
+        user.pass = newPassword;
+        user.save(function(err,response){
+          if(err){
+            res.status(500).send("Could not change the password");
+          }else{
+            res.status(204).send();
+          }
+        })
+      }
+    });
   }
 });
 

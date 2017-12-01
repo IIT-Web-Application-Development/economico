@@ -157,24 +157,24 @@
                     <h4 class="modal-title">{{user.username}}</h4>
                   </div>
                   <!-- form start -->
-                  <form id="add-expense-form" role="form" method="post" action="/costs/">
+                  <form id="edit-password-form" role="form" method="PUT" action=''>
                     <div class="modal-body">
-                      <input required type="hidden" name="userid" value="{{user._id}}" />
+                      <input required type="hidden" name="userId" id="userId" value="{{user._id}}" />
                       <div class="form-group">
                         <label for="input-title">Old password</label>
-                        <input required type="password" class="form-control" name="old-password" />
+                        <input required type="password" class="form-control" id="oldPassword" name="oldPassword" />
                       </div>
                       <div class="form-group">
                         <label for="input-title">New password</label>
-                        <input required type="password" class="form-control" name="new-password" />
+                        <input required type="password" id="newPassword" class="form-control" name="newPassword" />
                       </div>
                       <div class="form-group">
                         <label for="email">Retype password</label>
-                        <input required type="password" class="form-control" name="retype-password" />
+                        <input required type="password" id="retypePassword" class="form-control" name="retypePassword" />
                       </div>
                     </div>
                     <div class="modal-footer">
-                      <button type="submit" class="btn btn-primary pull-left">Submit</button>
+                      <button type="submit" class="btn btn-primary pull-left submit-settings-modal">Submit</button>
                       <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                     </div>
                   </form>

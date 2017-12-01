@@ -48,9 +48,6 @@ UserSchema.statics.authenticate = function(username, password, callback) {
 
     });
 
-
-
-
 }
 
 

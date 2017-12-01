@@ -41,6 +41,8 @@
     });
 
 
+
+    //--------------EDIT USER SETTINGS---------------//
     $('#settings-form').on('submit', function(e) {
       console.log("TEST");
       e.preventDefault();
@@ -62,6 +64,31 @@
         }
       });
     });
+
+    $('#edit-password-form').on('submit', function(e) {
+      console.log("TEST");
+      e.preventDefault();
+      var data = objectifyForm($(this));
+      // console.log("Form submitted! Let's get the info for", username);
+      $.ajax({
+        url: "/settings/" + $("#userId").val() + "/changePassword",
+        type: "PUT",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        statusCode: {
+          204: function(response) {
+             $(".submit-settings-modal").before('</br><p class="result">Password Changed</p>');
+          },
+          401: function(response) {
+            $(".submit-settings-modal").before('</br><p class="result">Old Password wrong!</p>');
+          },
+          500: function(response) {
+            $(".submit-settings-modal").before('</br><p class="result">Internal Error!</p>');
+          }
+        }
+      });
+    });
+
   });
 
   //------------FUNCTIONS-----------------------//
