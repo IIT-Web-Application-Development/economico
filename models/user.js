@@ -22,9 +22,7 @@ UserSchema.pre('save', function(next) {
     user.pass = hash;
     next();
   })
-
 });
-
 
 //authenticate input against database
 UserSchema.statics.authenticate = function(username, password, callback) {
