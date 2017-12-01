@@ -2,6 +2,8 @@
 
 (function($) {
 
+  var userId = $('.wrapper').attr('data-userid');
+
   $(document).ready(function() {
     "use strict";
 
@@ -92,7 +94,7 @@
       d = new Date(data.date);
       data.date = d.toISOString();
       $.ajax({
-        url: "/users/" + data.userid + "/costs/",
+        url: "/users/" + userId + "/costs/",
         type: "POST",
         data: JSON.stringify(data),
         contentType: "application/json",
@@ -206,7 +208,6 @@
     $(document).on('click', '.trash-expense', function(e) {
       e.preventDefault();
       var expenseId = $('#modal-trash-expense').attr("data-expenseId");
-      var userId = $('#modal-trash-expense').attr("data-userid");
       $.ajax({
         url: '/users/' + userId + '/costs/' + expenseId,
         type: 'DELETE',
@@ -370,7 +371,6 @@
     //Edit expense
     $('.edit-expense').on('click', function() {
       var expenseId = $(this).closest('tr').attr('id');
-      var userId = $(this).closest('table').attr('data-userId');
       var title = $(this).closest('tr').find('.title').html();
       var description = $(this).closest('tr').find('.description').html();
       var category = $(this).closest('tr').find('.category span').html();
@@ -389,7 +389,6 @@
     $(document).on('click', '.ask-trash-expense', function(e) {
       e.preventDefault();
       var expenseId = $(this).closest('tr').attr('id');
-      var userId = $(this).closest('table').attr('data-userId');
       var title = $(this).closest('tr').find('.title').html();
       $('#modal-trash-expense').find('.modal-title').html(title);
       $('#modal-trash-expense').attr({

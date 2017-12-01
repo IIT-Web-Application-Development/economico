@@ -1,5 +1,5 @@
 <body class="hold-transition skin-blue sidebar-mini" style="padding:0;">
-  <div class="wrapper">
+  <div data-userid="{{user._id}}" class="wrapper">
     <header class="main-header">
       <!-- Logo -->
       <a class="title logo">
@@ -319,8 +319,6 @@
                       <!-- form start -->
                       <form id="edit-expense-form" role="form" method="post" action="/costs/">
                         <div class="modal-body">
-                          {{!-- <input required type="hidden" name="userid" value="{{user._id}}">
-                          <input required type="hidden" name="costid" value=""> --}}
                           <div class="form-group">
                             <label for="input-title">Title</label>
                             <input required type="text" class="form-control" name="title" placeholder="i.e. War and Peace book - Amazon">
