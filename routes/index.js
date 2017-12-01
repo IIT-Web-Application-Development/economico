@@ -234,10 +234,31 @@ router.get('/settings/:userId', function(req, res, next) {
   }
 });
 
+
+//Using post for edit, want to retreive the user
 router.put('/settings/:userId', function(req, res, next) {
-  console.log('Settings page');
   if (req.session && req.session.userId) {
-    console.log('Getting user settings');
+  var userId = req.params.userId;
+
+  console.log("************************************** User Id:" + userId);
+
+  var name = req.body.name;
+  var email = req.body.email;
+  var limit = parseFloat(req.body.limit).toFixed(2).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+
+  User.update({ _id: userId }, 
+    { $set: { name: name, email: email, limit:limit}}, function(err,user){
+      if(err){
+        console.log(err);
+        res.status(500).send({"error":"Could not update the user"});
+      }else{
+        res.status(204).send();
+      }
+    });
+
+
+
+    /*console.log('Getting user settings');
     var userId = req.params.userId;
     var user = {};
     User.findOne({_id : userId}, function (err, user) {
@@ -246,20 +267,22 @@ router.put('/settings/:userId', function(req, res, next) {
         }else if(!user){
           res.status(404).send({"notFound": "User not found"});
         }else{
-          user._id = req.body.username;
           user.name = req.body.name;
           user.email = req.body.email;
           user.limit = Number.parseFloat(req.body.limit);
-          user.save(function (err, user){
+          user.save(function (err, response){
             if (err) {
+                console.log("could not update user");
                 console.log(err);
                 res.status(500).send({"error":"Internal error"});
             } else {
-              res.status(200).send({"user": user});
+              req.session.userId = user._id;
+              res.status(204).send();
             }
           }); 
         }
-      });
+      });*/
+
   } else {
     res.redirect("/login?error");
   }

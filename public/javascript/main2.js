@@ -46,17 +46,13 @@
       e.preventDefault();
       var data = objectifyForm($(this));
       $.ajax({
-        url: "/settings/" + $("#username").val(),
+        url: "/settings/" + $("#_id").val(),
         type: "PUT",
         data: JSON.stringify(data),
         contentType: "application/json",
         statusCode: {
-          200: function(user) {
-            console.log(user);
-            $("#username").val(user._id);
-            $("#email").val(user.email);
-            $("#limit").val(user.limit);
-            $("#name").val(user.name);
+          204: function(response) {
+            console.log("User updated");
             $(".submit-settings").before('</br><p class="result">User updated.</p>')
           },
           500: function(response) {
