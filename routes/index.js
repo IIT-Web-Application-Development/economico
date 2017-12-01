@@ -234,6 +234,35 @@ router.get('/settings/:userId', function(req, res, next) {
   }
 });
 
-
+router.put('/settings/:userId', function(req, res, next) {
+  console.log('Settings page');
+  if (req.session && req.session.userId) {
+    console.log('Getting user settings');
+    var userId = req.params.userId;
+    var user = {};
+    User.findOne({_id : userId}, function (err, user) {
+        if(err){
+          res.status(500).send({"error":"Internal error"});
+        }else if(!user){
+          res.status(404).send({"notFound": "User not found"});
+        }else{
+          user._id = req.body.username;
+          user.name = req.body.name;
+          user.email = req.body.email;
+          user.limit = Number.parseFloat(req.body.limit);
+          user.save(function (err, user){
+            if (err) {
+                console.log(err);
+                res.status(500).send({"error":"Internal error"});
+            } else {
+              res.status(200).send({"user": user});
+            }
+          }); 
+        }
+      });
+  } else {
+    res.redirect("/login?error");
+  }
+});
 
 module.exports = router;

@@ -39,6 +39,33 @@
         }
       });
     });
+
+
+    $('#settings-form').on('submit', function(e) {
+      console.log("TEST");
+      e.preventDefault();
+      var data = objectifyForm($(this));
+      $.ajax({
+        url: "/settings/" + $("#username").val(),
+        type: "PUT",
+        data: JSON.stringify(data),
+        contentType: "application/json",
+        statusCode: {
+          200: function(user) {
+            console.log(user);
+            $("#username").val(user._id);
+            $("#email").val(user.email);
+            $("#limit").val(user.limit);
+            $("#name").val(user.name);
+            $(".submit-settings").before('</br><p class="result">User updated.</p>')
+          },
+          500: function(response) {
+            console.log(response);
+            $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
+          }
+        }
+      });
+    });
   });
 
   //------------FUNCTIONS-----------------------//
