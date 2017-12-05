@@ -24,7 +24,11 @@ var users = require('./routes/users');
 var costs = require('./routes/costs');
 
 var app = express();
-http.createServer(app).listen(process.env.PORT || 3000);
+// // http.createServer(app).listen(process.env.PORT || 3000);
+// var port = process.env.PORT || 3000;
+// app.listen(port, function() {
+//   console.log('Our app is running on port:' + port);
+// });
 
 
 // view engine setup
