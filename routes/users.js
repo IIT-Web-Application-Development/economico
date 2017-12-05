@@ -51,7 +51,7 @@ router.route('/')
 
   user.save(function(err,user){
     if(err !== null){
-        console.log(err.code);
+        // console.log(err.code);
         if(err.code === 11000){
           res.status(500).json({"exists": true});
         }else{
