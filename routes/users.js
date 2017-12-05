@@ -97,8 +97,6 @@ router.route('/:userid')
   }
 })
 .put(function(req, res, next){
-
-
   if (req.session && req.session.userId){
     console.log('Updating specific user');
     var user = User.update({'_id': req.params.userid}, req.body);
