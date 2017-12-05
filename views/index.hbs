@@ -245,6 +245,13 @@
                 <a href="/export/{{user._id}}" type="button" class="btn btn-default pull-left ask-trash-all-expenses" data-toggle="modal">
                   <i class="fa fa-export"></i> Export Data
                 </a>
+                <!-- <form ref='uploadForm' 
+                  action='/import/{{user._id}}' 
+                  method='post' 
+                  encType="multipart/form-data">
+                    <input  class="btn btn-default pull-left" type="file" name="sampleFile" />
+                    <input class="btn btn-default pull-left" type='submit' value='Import File'/>
+                </form> -->
                 <button type="button" class="btn btn-default pull-right" data-toggle="modal" data-target="#modal-add-expense">
                   <i class="fa fa-plus"></i>
                   Add item
@@ -388,7 +395,7 @@
                         </p>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-primary trash-expense pull-left">Delete</button>
+                        <button type="button" class="btn btn-primary trash-expense pull-left delete">Delete</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                       </div>
 
@@ -415,7 +422,7 @@
                         </p>
                       </div>
                       <div class="modal-footer">
-                        <button type="button" class="btn btn-primary trash-all-expenses pull-left">Delete</button>
+                        <button type="button" class="btn btn-primary trash-all-expenses pull-left delete-all">Delete</button>
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                       </div>
 

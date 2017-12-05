@@ -138,5 +138,15 @@ router.route('/:userid')
   }
 });
 
+router.delete("/:userId/deleteCosts", function(req,res,next){
+  var userId = req.params.userId;
+  User.update({_id: userId},{$set:{costs:null}},function(err,res){
+    if(err){
+      res.status(500).send();
+    }else{
+      res.status(204).send();
+    }
+  })
+});
 
 module.exports = router;

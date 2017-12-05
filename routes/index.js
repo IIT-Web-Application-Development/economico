@@ -3,6 +3,7 @@ var router = express.Router();
 var User = require('../models/user');
 
  var nodeExcel=require('excel-export');
+ var xlsx = require('excel');
 
 
 /* Redirect based on session */
@@ -294,23 +295,23 @@ router.put("/settings/:userId/changePassword", function(req,res, next){
  var conf={}
 conf.cols=[
 {
-    caption:'Title',
+    caption:'title',
     type:'string',
     width:100
 },
 {
-    caption:'Description',
+    caption:'description',
     type:'string',
     width:100
 },
 
 {
-    caption:'Amount',
+    caption:'amount',
     type:'string',
     width:100
 },
 {
-    caption:'Category',
+    caption:'category',
     type:'string',
     width:100
 }
@@ -331,7 +332,7 @@ router.get("/export/:userId", function(req,res,next){
       for(var i = 0 ; i < userCosts.length;i++){
         var cost = [userCosts[i].title,
                     userCosts[i].description,
-                    "$" + userCosts[i].amount,
+                    userCosts[i].amount,
                     userCosts[i].category];
         costsFormatted.push(cost);
       }
@@ -343,6 +344,53 @@ router.get("/export/:userId", function(req,res,next){
     }
   });
 });
+
+router.post('/import/:userId', function(req, res) {
+  var userId = req.params.userId;
+  let importedFile = req.files.sampleFile;
+  console.log(importedFile.name);
+  importedFile.mv(importedFile.name, function(err) {
+    if (err)
+      return res.status(500).send(err);
+
+    xlsx(importedFile.name, function(err,data) {
+      if(err) throw err;
+      //console.log(jsonDataArray(data));
+      var newExpensesArray = convertExcelToJSON(data);
+      console.log(newExpensesArray);
+      User.update({ _id: userId }, { $push: {costs: newExpensesArray}},function(err,response){
+        if(err){
+          console.log(err);
+          res.send(err);
+        }else{
+          res.redirect("/dashboard/" + userId);
+        }
+      });
+    });
+  });
+});
+
+
+function convertExcelToJSON(array) {
+  var first = array[0].join();
+  var headers = first.split(',');
+  
+  var jsonData = [];
+  for ( var i = 1, length = array.length; i < length; i++ )
+  {
+   
+    var myRow = array[i].join();
+    var row = myRow.split(',');
+    
+    var data = {};
+    for ( var x = 0; x < row.length; x++ )
+    {
+      data[headers[x]] = row[x];
+    }
+    jsonData.push(data);
+  }
+  return jsonData;
+};
 
 
 module.exports = router;
