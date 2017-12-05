@@ -306,7 +306,7 @@ conf.cols=[
 
 {
     caption:'Amount',
-    type:'number',
+    type:'string',
     width:100
 },
 {
@@ -329,7 +329,10 @@ router.get("/export/:userId", function(req,res,next){
       var costsFormatted = [];
 
       for(var i = 0 ; i < userCosts.length;i++){
-        var cost = [userCosts[i].title,userCosts[i].description,userCosts[i].amount,userCosts[i].category];
+        var cost = [userCosts[i].title,
+                    userCosts[i].description,
+                    "$" + userCosts[i].amount,
+                    userCosts[i].category];
         costsFormatted.push(cost);
       }
       conf.rows = costsFormatted;
