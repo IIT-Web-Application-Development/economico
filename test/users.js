@@ -39,7 +39,7 @@ describe('Users', () => {
 			var user = new User({
 				_id: 'testuser',
                 name: 'test',
-                pass: p,
+                pass: '123',
                 limit: 100,
                 email: 'a@a.com',
                 costs: [],
@@ -81,7 +81,7 @@ describe('Users', () => {
 			var user = new User({
 				_id: 'testuser',
                 name: 'test',
-                pass: p,
+                pass: '123',
                 limit: 100,
                 email: 'a@a.com',
                 costs: [],
@@ -95,7 +95,7 @@ describe('Users', () => {
 					res.body.should.be.a('object');
 					done();
 				});
-		})
+		});
     });
     describe('/POST users', () => {
         it('it should return access denied for unauthorized user.', (done) => {
@@ -199,6 +199,6 @@ describe('Users', () => {
 						done();
 				    });
 				});
-		})
+		});
     });
 });
