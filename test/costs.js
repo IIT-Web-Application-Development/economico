@@ -43,44 +43,24 @@ describe('Costs', () => {
             });
 		});
     });
-    describe('/GET costs/:costid', () => {
-        it('it should return access denied for unauthorized user.', (done) => {
-			chai.request(app)
-            .get('/costs/:costid')
-            .end((err, res) => {
-                res.should.have.status(403);
-                done();
-            });
-		});
-    });
     describe('/PUT costs/:costid', () => {
         it('it should update specific cost', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
-		});
-    });
-    describe('/PUT costs/:costid', () => {
-        it('it should return access denied for unauthorized user.', (done) => {
 			chai.request(app)
-            .put('/costs/:costid')
+            .put('/users/:userid/costs/:costid')
             .end((err, res) => {
-                res.should.have.status(403);
+                res.should.have.status(404);
+                res.body.should.be.a('object');
                 done();
             });
 		});
     });
     describe('/DELETE costs/:costid', () => {
         it('it should delete specific cost', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
-		});
-    });
-    describe('/DELETE costs/:costid', () => {
-        it('it should return access denied for unauthorized user.', (done) => {
 			chai.request(app)
-            .delete('/costs/:costid')
+            .delete('/users/:userid/costs/:costid')
             .end((err, res) => {
-                res.should.have.status(403);
+                res.should.have.status(404);
+                res.body.should.be.a('object');
                 done();
             });
 		});
