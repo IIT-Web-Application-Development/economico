@@ -54,7 +54,8 @@
 
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
-      console.log("TEST");
+      $('#register-form result').remove();
+      $('.label-warning').remove();
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
