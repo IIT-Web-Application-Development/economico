@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var uri = 'mongodb://localhost/economico';
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
+var fileUpload = require('express-fileupload');
 
 //database
 mongoose.Promise = global.Promise;
@@ -25,6 +26,10 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
+
+
+//File upload support
+app.use(fileUpload());
 
 
 

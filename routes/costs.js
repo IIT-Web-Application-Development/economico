@@ -210,6 +210,7 @@ router.route('/')
     });
   });
 
+
 router.route('/:costid')
   .get(function(req, res, next) {
     console.log('getting specific cost for specific user');
@@ -389,6 +390,8 @@ router.route('/:costid')
       }
     });
   });
+
+
 
 function generateID() {
   return Date.now();
