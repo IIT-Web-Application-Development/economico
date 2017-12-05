@@ -54,8 +54,8 @@
 
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
-      $('#register-form result').remove();
-      $('.label-warning').remove();
+      $('#register-form .result').remove();
+      $('#register-form .label-warning').remove();
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
@@ -68,6 +68,7 @@
           data: JSON.stringify(data),
           contentType: "application/json",
           success: function(data, status) {
+            $('#register-form .label-warning').remove();
             var currentHref = window.location.href;
             // wondow.location.href = currentHref.replace('register', 'login');
             $('#register-form input').val('');
