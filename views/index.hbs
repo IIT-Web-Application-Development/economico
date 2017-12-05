@@ -245,9 +245,9 @@
                 <a href="/export/{{user._id}}" type="button" class="btn btn-default pull-left ask-trash-all-expenses" data-toggle="modal">
                   <i class="fa fa-export"></i> Export Data
                 </a>
-                <!-- <form ref='uploadForm' 
-                  action='/import/{{user._id}}' 
-                  method='post' 
+                <!-- <form ref='uploadForm'
+                  action='/import/{{user._id}}'
+                  method='post'
                   encType="multipart/form-data">
                     <input  class="btn btn-default pull-left" type="file" name="sampleFile" />
                     <input class="btn btn-default pull-left" type='submit' value='Import File'/>
@@ -289,14 +289,17 @@
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                               </div>
-                              <input type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
+                              <input required type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
                             </div>
                           </div>
                           <!-- select -->
                           {{#if categories}}
                             <div class="form-group">
                               <label>Category</label>
-                              <select name="category" class="form-control">
+                              <select required name="category" class="form-control">
+                                <option value="">
+                                  Select category
+                                </option>
                                 {{#each categories}}
                                   <option value="{{this.name}}">{{this.name}}</option>
                                 {{/each}}
@@ -350,14 +353,17 @@
                               <div class="input-group-addon">
                                 <i class="fa fa-calendar"></i>
                               </div>
-                              <input type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
+                              <input required type="text" class="form-control datepicker" name="date" placeholder="10/05/2017" />
                             </div>
                           </div>
                           <!-- select -->
                           {{#if categories}}
                             <div class="form-group">
                               <label>Category</label>
-                              <select name="category" class="form-control">
+                              <select required name="category" class="form-control">
+                                <option value="">
+                                  Select category
+                                </option>
                               {{#each categories}}
                               <option value="{{this.name}}">{{this.name}}</option>
                               {{/each}}

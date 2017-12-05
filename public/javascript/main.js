@@ -54,7 +54,8 @@
 
     //--------------REGISTER---------------//
     $('#register-form').on('submit', function(e) {
-      console.log("TEST");
+      $('#register-form .result').remove();
+      $('#register-form .label-warning').remove();
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
@@ -67,9 +68,11 @@
           data: JSON.stringify(data),
           contentType: "application/json",
           success: function(data, status) {
+            $('#register-form .label-warning').remove();
             var currentHref = window.location.href;
             // wondow.location.href = currentHref.replace('register', 'login');
             $('#register-form input').val('');
+            $('.invalidnumber').remove();
             $('.login-btn').before('</br><p class="result">You\'ve been successfully registered.</p>');
             $('.login-btn').html('Login here.');
             console.log(data);
@@ -94,6 +97,12 @@
       e.preventDefault();
       $('.register-box-body .result').remove();
       var data = objectifyForm($(this));
+      var x = data.amount;
+      $('.invalidnumber').remove();
+      if (isNaN(x)) {
+        $('#add-expense-form input[name="amount"]').closest('.form-group').append('<p class="invalidnumber">Input should be number!</p>');
+        return false;
+      }
       var d = new Date();
       data.createdAt = d.toISOString();
       d = new Date(data.date);
@@ -119,10 +128,12 @@
             data.title + '</td><td class="description">' + data.description +
             '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
             '</span></td><td class="amount">$' +
-            data.amount + '</td>  <td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-Doughnutpense" class="fa fa-edit Doughnutpense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
+            data.amount + '</td>  <td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
           $('#expenses-list tbody').prepend($tableRow);
           $('#total').html('$' + total);
-          $('#modal-add-expense').modal('toggle');
+
+          $('#add-expense-form input,#add-expense-form textarea,#add-expense-form select').val('');
+          // $('#modal-add-expense').modal('toggle');
 
           $('.is-chart').removeClass('disable');
 
@@ -153,6 +164,12 @@
       var d = new Date();
       var n = d.toISOString();
       data.createdAt = n;
+      var x = data.amount;
+      $('.invalidnumber').remove();
+      if (isNaN(x)) {
+        $('#edit-expense-form input[name="amount"]').closest('.form-group').append('<p class="invalidnumber">Input should be number!</p>');
+        return false;
+      }
       var url = $(this).attr('action');
       console.log(url);
       $.ajax({
@@ -356,7 +373,7 @@
             }
             $('#no-data-found').remove();
             $('#total').html('$' + total);
-
+            $('.is-chart').removeClass('disable');
           } else {
             var $tableRowHtml = '<tr id="no-data-found"><td colspan="5">' + dataArray.message + '</td>';
             $('#table-expenses tbody').html($tableRowHtml);
@@ -584,96 +601,96 @@
   });
 
   //--------------LOGIN FORM---------------//
-    $('#login-form').on('submit', function(e) {
-      console.log("TEST");
-      e.preventDefault();
-      var data = objectifyForm($(this));
-      // console.log("Form submitted! Let's get the info for", username);
-      $.ajax({
-        url: "/login",
-        type: "POST",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        statusCode: {
-          200: function(response) {
-            var currentHref = window.location.href;
-            window.location.href = currentHref.replace('login', 'dashboard/' + response.userId).replace('?error','');
-          },
-          401: function(response) {
-            $('p.result').detach();
-            $('.register').before('</br><p class="result">Username/Password wrong.</p>');
+  $('#login-form').on('submit', function(e) {
+    console.log("TEST");
+    e.preventDefault();
+    var data = objectifyForm($(this));
+    // console.log("Form submitted! Let's get the info for", username);
+    $.ajax({
+      url: "/login",
+      type: "POST",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      statusCode: {
+        200: function(response) {
+          var currentHref = window.location.href;
+          window.location.href = currentHref.replace('login', 'dashboard/' + response.userId).replace('?error', '');
+        },
+        401: function(response) {
+          $('p.result').detach();
+          $('.register').before('</br><p class="result">Username/Password wrong.</p>');
 
-          },
-          500: function(response) {
-            console.log(response);
-          }
+        },
+        500: function(response) {
+          console.log(response);
         }
-      });
+      }
     });
+  });
 
-    //--------------EDIT USER SETTINGS---------------//
-    $('#settings-form').on('submit', function(e) {
-      console.log("TEST");
-      e.preventDefault();
-      var data = objectifyForm($(this));
-      $.ajax({
-        url: "/settings/" + $("#_id").val(),
-        type: "PUT",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        statusCode: {
-          204: function(response) {
-            console.log("User updated");
-            $(".submit-settings").before('</br><p class="result">User updated.</p>')
-          },
-          500: function(response) {
-            console.log(response);
-            $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
-          }
+  //--------------EDIT USER SETTINGS---------------//
+  $('#settings-form').on('submit', function(e) {
+    console.log("TEST");
+    e.preventDefault();
+    var data = objectifyForm($(this));
+    $.ajax({
+      url: "/settings/" + $("#_id").val(),
+      type: "PUT",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      statusCode: {
+        204: function(response) {
+          console.log("User updated");
+          $(".submit-settings").before('</br><p class="result">User updated.</p>')
+        },
+        500: function(response) {
+          console.log(response);
+          $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
         }
-      });
+      }
     });
+  });
 
-    //--------------EDIT USER PASSWORD---------------//
-    $('#edit-password-form').on('submit', function(e) {
-      console.log("TEST");
-      e.preventDefault();
-      var data = objectifyForm($(this));
-      // console.log("Form submitted! Let's get the info for", username);
-      $.ajax({
-        url: "/settings/" + $("#userId").val() + "/changePassword",
-        type: "PUT",
-        data: JSON.stringify(data),
-        contentType: "application/json",
-        statusCode: {
-          204: function(response) {
-             $(".submit-settings-modal").before('</br><p class="result">Password Changed</p>');
-          },
-          401: function(response) {
-            $(".submit-settings-modal").before('</br><p class="result">Old Password wrong!</p>');
-          },
-          500: function(response) {
-            $(".submit-settings-modal").before('</br><p class="result">Internal Error!</p>');
-          }
+  //--------------EDIT USER PASSWORD---------------//
+  $('#edit-password-form').on('submit', function(e) {
+    console.log("TEST");
+    e.preventDefault();
+    var data = objectifyForm($(this));
+    // console.log("Form submitted! Let's get the info for", username);
+    $.ajax({
+      url: "/settings/" + $("#userId").val() + "/changePassword",
+      type: "PUT",
+      data: JSON.stringify(data),
+      contentType: "application/json",
+      statusCode: {
+        204: function(response) {
+          $(".submit-settings-modal").before('</br><p class="result">Password Changed</p>');
+        },
+        401: function(response) {
+          $(".submit-settings-modal").before('</br><p class="result">Old Password wrong!</p>');
+        },
+        500: function(response) {
+          $(".submit-settings-modal").before('</br><p class="result">Internal Error!</p>');
         }
-      });
+      }
     });
+  });
 
-    //--------------DELETE USER---------------//
-    $('.btn-delete').click(function(){
-      $.ajax({
-        url: "/users/" + $("#userId").val(),
-        type: "DELETE",
-        contentType: "application/json",
-        statusCode: {
-          200: function(response){            // $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
-            var currentHref = window.location.href;
-            window.location.href = currentHref.replace('settings/' + $("#userId").val(), 'login');
-          
-          }
+  //--------------DELETE USER---------------//
+  $('.btn-delete').click(function() {
+    $.ajax({
+      url: "/users/" + $("#userId").val(),
+      type: "DELETE",
+      contentType: "application/json",
+      statusCode: {
+        200: function(response) { // $(".submit-settings").before('</br><p class="result">Internal Error.</p>')
+          var currentHref = window.location.href;
+          window.location.href = currentHref.replace('settings/' + $("#userId").val(), 'login');
+
         }
-      });
+      }
     });
+  });
 
   //------------FUNCTIONS-----------------------//
 
