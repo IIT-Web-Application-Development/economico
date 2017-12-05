@@ -2,6 +2,8 @@ var express = require('express');
 var router = express.Router();
 var User = require('../models/user');
 
+ var nodeExcel=require('excel-export');
+
 
 /* Redirect based on session */
 router.get("/", function(req,res,next){
@@ -277,7 +279,7 @@ router.put("/settings/:userId/changePassword", function(req,res, next){
         user.pass = newPassword;
         user.save(function(err,response){
           if(err){
-            res.status(500).send("Could not change the password");
+            res.status(500).send(err);
           }else{
             res.status(204).send();
           }
@@ -286,5 +288,58 @@ router.put("/settings/:userId/changePassword", function(req,res, next){
     });
   }
 });
+
+
+
+ var conf={}
+conf.cols=[
+{
+    caption:'Title',
+    type:'string',
+    width:100
+},
+{
+    caption:'Description',
+    type:'string',
+    width:100
+},
+
+{
+    caption:'Amount',
+    type:'number',
+    width:100
+},
+{
+    caption:'Category',
+    type:'string',
+    width:100
+}
+];
+
+
+router.get("/export/:userId", function(req,res,next){
+  var userId = req.params.userId;
+
+
+  User.findOne({_id : userId},function(err,user){
+    if(err){
+      res.status(500).send(err);
+    }else{
+      var userCosts = user.costs;
+      var costsFormatted = [];
+
+      for(var i = 0 ; i < userCosts.length;i++){
+        var cost = [userCosts[i].title,userCosts[i].description,userCosts[i].amount,userCosts[i].category];
+        costsFormatted.push(cost);
+      }
+      conf.rows = costsFormatted;
+      var result=nodeExcel.execute(conf);
+      res.setHeader('Content-Type','application/vnd.openxmlformates');
+      res.setHeader("Content-Disposition","attachment;filename="+ userId + ".xlsx");
+      res.end(result,'binary');
+    }
+  });
+});
+
 
 module.exports = router;
