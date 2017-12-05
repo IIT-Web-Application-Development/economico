@@ -45,18 +45,37 @@ describe('Users', () => {
                 costs: [],
                 total: 10
 			});
-			user.save();
-			chai.request(app)
-				.get('/users')
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.should.be.a('array');
-					res.body.length.should.be.eql(1);
-					let returnedUser = res.body[0];
-					returnedUser.name.should.be.eql(user.name);
-					returnedUser.email.should.be.eql(user.email);
-					done();
-				});
+            user.save();
+            User.authenticate(user._id, user.pass, function(error, usr) {
+                if (error || !usr) {
+                  console.log("There is an error");
+                //   res.status(401).send();
+                } else {
+                  req.session.userId = usr._id;
+                  chai.request(app)
+                  .get('/users')
+                  .end((err, res) => {
+                      res.should.have.status(200);
+                      res.body.should.be.a('array');
+                      res.body.length.should.be.eql(1);
+                      let returnedUser = res.body[0];
+                      returnedUser.name.should.be.eql(user.name);
+                      returnedUser.email.should.be.eql(user.email);
+                      done();
+                  });
+                }
+            });
+			// chai.request(app)
+			// 	.get('/users')
+			// 	.end((err, res) => {
+			// 		res.should.have.status(200);
+			// 		res.body.should.be.a('array');
+			// 		res.body.length.should.be.eql(1);
+			// 		let returnedUser = res.body[0];
+			// 		returnedUser.name.should.be.eql(user.name);
+			// 		returnedUser.email.should.be.eql(user.email);
+			// 		done();
+			// 	});
 		});
     });
     describe('/GET users/:userid', () => {
@@ -107,19 +126,10 @@ describe('Users', () => {
             });
         });
         it('it should create a user', (done) => {
-            var p;
-            bcrypt.hash('123', 10, function(err, hash) {
-                if (err) {
-                    console.log(err);
-                  return next(err);
-                }
-                p = hash;
-                next();
-            });
-            var user={
-                _id: 'testuser',
+                var user={
+                _id: 'testuser2',
                 name: 'test',
-                pass: p,
+                pass: '123',
                 limit: 100,
                 email: 'a@a.com',
                 costs: [],
