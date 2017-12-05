@@ -5,7 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var uri = 'mongodb://localhost/economico';
+// var uri = 'mongodb://localhost/economico';
+var uri = 'mongodb://heroku_f1fl0dpn:2256mi8051@ds129796.mlab.com:29796/heroku_f1fl0dpn';
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var fileUpload = require('express-fileupload');
@@ -22,6 +23,8 @@ var users = require('./routes/users');
 var costs = require('./routes/costs');
 
 var app = express();
+http.createServer(app).listen(process.env.PORT || 3000);
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
