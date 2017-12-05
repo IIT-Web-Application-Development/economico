@@ -128,7 +128,7 @@
             data.title + '</td><td class="description">' + data.description +
             '</td><td class="category"><span class="label" style="background-color:' + color + '">' + data.category +
             '</span></td><td class="amount">$' +
-            data.amount + '</td>  <td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-Doughnutpense" class="fa fa-edit Doughnutpense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
+            data.amount + '</td>  <td class="date">.' + date + '</td><td><div class="tools"><a data-toggle="modal" data-target="#modal-edit-expense" class="fa fa-edit edit-expense"></a>  <a data-toggle="modal" data-target="#modal-trash-expense" class="fa fa-trash-o ask-trash-expense"></a></div></td></tr>';
           $('#expenses-list tbody').prepend($tableRow);
           $('#total').html('$' + total);
 
