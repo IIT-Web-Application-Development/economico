@@ -7,7 +7,8 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var http = require('http');
 // var uri = 'mongodb://localhost/economico';
-var uri = 'mongodb://heroku_f1fl0dpn:2256mi8051@ds129796.mlab.com:29796/heroku_f1fl0dpn';
+var uri = 'mongodb://milsab:milad1039@ds129796.mlab.com:29796/heroku_f1fl0dpn';
+// mongodb://<dbuser>:<dbpassword>@ds129796.mlab.com:29796/heroku_f1fl0dpn
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var fileUpload = require('express-fileupload');
