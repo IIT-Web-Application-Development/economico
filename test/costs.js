@@ -32,20 +32,15 @@ describe('Costs', () => {
             });
 		});
     });
-    describe('/POST costs', () => {
-        it('it should return access denied for unauthorized user.', (done) => {
-			chai.request(app)
-            .post('/costs')
-            .end((err, res) => {
-                res.should.have.status(403);
-                done();
-            });
-		});
-    });
     describe('/GET costs/:costid', () => {
         it('it should return empty object when no cost exists.', (done) => {
-			//TODO
-			expect(false, 'todo').to.be.true;
+			chai.request(app)
+            .get('/users/:userid/costs/:costid')
+            .end((err, res) => {
+                res.should.have.status(404);
+                res.body.should.be.a('object');
+                done();
+            });
 		});
     });
     describe('/GET costs/:costid', () => {
